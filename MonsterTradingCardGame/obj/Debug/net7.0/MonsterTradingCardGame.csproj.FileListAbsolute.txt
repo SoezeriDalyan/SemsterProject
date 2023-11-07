@@ -1,0 +1,14 @@
+C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\MonsterTradingCardGame\MonsterTradingCardGame\bin\Debug\net7.0\MonsterTradingCardGame.exe
+C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\MonsterTradingCardGame\MonsterTradingCardGame\bin\Debug\net7.0\MonsterTradingCardGame.deps.json
+C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\MonsterTradingCardGame\MonsterTradingCardGame\bin\Debug\net7.0\MonsterTradingCardGame.runtimeconfig.json
+C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\MonsterTradingCardGame\MonsterTradingCardGame\bin\Debug\net7.0\MonsterTradingCardGame.dll
+C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\MonsterTradingCardGame\MonsterTradingCardGame\bin\Debug\net7.0\MonsterTradingCardGame.pdb
+C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net7.0\MonsterTradingCardGame.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net7.0\MonsterTradingCardGame.AssemblyInfoInputs.cache
+C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net7.0\MonsterTradingCardGame.AssemblyInfo.cs
+C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net7.0\MonsterTradingCardGame.csproj.CoreCompileInputs.cache
+C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net7.0\MonsterTradingCardGame.dll
+C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net7.0\refint\MonsterTradingCardGame.dll
+C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net7.0\MonsterTradingCardGame.pdb
+C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net7.0\MonsterTradingCardGame.genruntimeconfig.cache
+C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net7.0\ref\MonsterTradingCardGame.dll
