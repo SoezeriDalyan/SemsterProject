@@ -12,3 +12,6 @@ C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\Monster
 C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net7.0\MonsterTradingCardGame.pdb
 C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net7.0\MonsterTradingCardGame.genruntimeconfig.cache
 C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net7.0\ref\MonsterTradingCardGame.dll
+C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\MonsterTradingCardGame\MonsterTradingCardGame\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net7.0\MonsterTradingCardGame.csproj.AssemblyReference.cache
+C:\Users\dalya\Documents\Workspace\SWEN1 - SWDevelopment\SemesterProjekt\MonsterTradingCardGame\MonsterTradingCardGame\obj\Debug\net7.0\MonsterTradingCardGame.csproj.CopyComplete
