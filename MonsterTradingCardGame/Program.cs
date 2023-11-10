@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using MonsterTradingCardGame;
 using Newtonsoft.Json;
+using Npgsql;
 
 class Program
 {
@@ -14,6 +15,8 @@ class Program
     static Pack pack = new Pack();
     static async Task Main()
     {
+        await InitilizeDB();
+        //Initilaize DB
         const int port = 10001;
         var listener = new TcpListener(IPAddress.Any, port);
         listener.Start();
@@ -70,7 +73,6 @@ class Program
                 Console.WriteLine(responseData);
                 responseBytes = Encoding.UTF8.GetBytes(responseData);
                 await networkStream.WriteAsync(responseBytes, 0, responseBytes.Length);
-
             }
         }
     }
@@ -137,5 +139,43 @@ class Program
         }
 
         return "";
+    }
+
+    static async Task InitilizeDB() 
+    {
+        // create tables if they don't exist
+        var connectionString = "Host=localhost;Port=5432;Username=postgres;Password=password;Database=postgres";
+        using( var connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+            var query = """
+                CREATE TABLE IF NOT EXISTS Users(
+                    Username VARCHAR,
+                    Password VARCHAR,
+                    VirtualCoins INTEGER
+                    );
+            """;
+
+           // string query = "SELECT * FROM your_table WHERE column1 = @value";
+            using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+            {
+                // Create and set parameters
+                //NpgsqlParameter parameter = new NpgsqlParameter("@value", NpgsqlTypes.NpgsqlDbType.Varchar);
+                //parameter.Value = "some_value";
+                //command.Parameters.Add(parameter);
+
+                using (NpgsqlCommand writer = new NpgsqlCommand(query, connection))
+                {
+                    //while (reader.Read())
+                    //{
+                    //    Console.WriteLine($"{reader["column1"]} - {reader["column2"]}");
+                    //}
+                    command.ExecuteNonQuery();
+                }
+            }
+
+            // Close the connection
+            connection.Close();
+        }
     }
 }
