@@ -149,11 +149,35 @@ class Program
         {
             connection.Open();
             var query = """
-                CREATE TABLE IF NOT EXISTS Users(
-                    Username VARCHAR,
-                    Password VARCHAR,
-                    VirtualCoins INTEGER
-                    );
+            CREATE TABLE IF NOT EXISTS Users(
+                Username VARCHAR unique Primary Key,
+                Password VARCHAR,
+                VirtualCoins INTEGER
+            );
+
+            CREATE TABLE IF NOT EXISTS UserSession(
+                SessionID serial PRIMARY KEY,
+            	Username VARCHAR,
+                SessionToken Varchar,
+            	LAST_ACTIVITY_TIME TIMESTAMP,
+            	FOREIGN KEY (Username) REFERENCES Users(Username)
+            );
+             
+            CREATE TABLE IF NOT EXISTS Packs(
+            	PackID varchar primary key
+            );
+
+            CREATE TABLE IF NOT EXISTS Card(
+                CardID varchar Primary Key,
+               	CardName VARCHAR,
+               	Damage decimal,
+                --attribute Varchar,
+               	--type TIMESTAMP,
+            	PackID varchar,
+            	FOREIGN KEY (PackID) REFERENCES Packs(PackID)
+            );
+
+
             """;
 
            // string query = "SELECT * FROM your_table WHERE column1 = @value";
