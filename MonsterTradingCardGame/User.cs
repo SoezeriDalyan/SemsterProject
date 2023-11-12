@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace MonsterTradingCardGame
 {
@@ -14,8 +9,8 @@ namespace MonsterTradingCardGame
         [JsonPropertyName("Password")]
         public string Password { get; private set; }
         public int VirtualCoins { get; private set; }
-        public User(string username, string password) 
-        { 
+        public User(string username, string password)
+        {
             Username = username;
             Password = password;
             VirtualCoins = 100;
