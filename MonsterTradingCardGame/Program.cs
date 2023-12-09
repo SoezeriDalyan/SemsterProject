@@ -50,7 +50,7 @@ class Program
                 }
                 else if (request.StartsWith("POST /sessions HTTP/1.1"))
                 {
-                    if (HandleUserLogin(body))
+                    if (HandleUserLogin(body) != null)
                     {
                         //Successful
                         responseData = $"{responseKontrukt}Login Succsesfully";
@@ -78,18 +78,30 @@ class Program
                     string headerToken = GetHeaderToken(request);
                     if (headerToken == String.Empty)
                     {
-                        responseData = $"{responseKontrukt}Pack Creation Failed";
+                        responseData = $"{responseKontrukt}Unauthorized";
                     }
-                    else if (HandlePackCreation(body, headerToken))
+                    else if (BuysPack(headerToken))
                     {
-                        responseData = $"{responseKontrukt}Pack Created Succsesfully";
+                        responseData = $"{responseKontrukt}Transaction Successful";
+                    }
+                }
+                else if (request.StartsWith("GET /cards HTTP/1.1"))
+                {
+                    string headerToken = GetHeaderToken(request);
+                    string allCards = GetCards(headerToken);
+                    if (headerToken == String.Empty)
+                    {
+                        responseData = $"{responseKontrukt}Unauthorized";
+                    }
+                    else if (allCards != String.Empty)
+                    {
+                        responseData = $"{responseKontrukt} All Cards: {allCards}";
                     }
                 }
 
                 /*
-                 echo 7) acquire newly created packages altenhof
-                 curl -X POST http://localhost:10001/transactions/packages --header "Content-Type: application/json" 
-                --header "Authorization: Bearer altenhof-mtcgToken" -d ""
+                 echo 8) show all acquired cards kienboec
+                 curl -X GET http://localhost:10001/cards --header "Authorization: Bearer kienboec-mtcgToken"
                 */
 
 
@@ -112,7 +124,7 @@ class Program
     static bool HandleUserCreation(string body)
     {
         User user = JsonConvert.DeserializeObject<User>(body);
-        return dB.AddUser(user); ;
+        return dB.AddUser(user);
     }
 
     /// <summary>
@@ -120,7 +132,7 @@ class Program
     /// </summary>
     /// <param name="body"></param>
     /// <returns></returns>
-    static bool HandleUserLogin(string body)
+    static string HandleUserLogin(string body)
     {
         User user = JsonConvert.DeserializeObject<User>(body);
         return dB.CreateSession(user);
@@ -143,6 +155,27 @@ class Program
         //    return false;
 
         return true;
+    }
+
+    /// <summary>
+    /// Saves and updates everything in the database
+    /// </summary>
+    /// <param name="headerToken"></param>
+    /// <returns></returns>
+    static bool BuysPack(string headerToken)
+    {
+        dB.BuyPack(headerToken);
+        return true;
+    }
+
+    /// <summary>
+    /// Receives all Cards the User has
+    /// </summary>
+    /// <param name="headerToken"></param>
+    /// <returns></returns>
+    static string GetCards(string headerToken)
+    {
+        return dB.GetAllCards(headerToken);
     }
 
 
@@ -188,14 +221,5 @@ class Program
         }
 
         return "";
-    }
-
-    static void BuyPacks(string Token)
-    {
-        /// <summary>
-        /// Checking if Session Exists => maybe own method for Check => TOdo
-        /// </summary>
-        /// <param name="card"></param>
-        /// <param name="token"></param>
     }
 }

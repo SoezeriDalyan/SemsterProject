@@ -8,10 +8,13 @@ namespace MonsterTradingCardGame
         public void InitilizeDB();
 
         public bool AddUser(User user);
-        public bool CreateSession(User user);
+        public string CreateSession(User user);
         public void CreatePackandCards(List<Card> card, string token);
         public string CreatePack();
         public void CreateCards(List<Card> cards, string packUUID);
+        public void BuyPack(string Token);
+        public string GetPackUUID();
+        public string GetAllCards(string token);
     }
 
     internal class DB : IPostgresDB
@@ -43,7 +46,8 @@ namespace MonsterTradingCardGame
                     );
              
                     CREATE TABLE IF NOT EXISTS Packs(
-                    PackID varchar primary key
+                    PackID varchar primary key,
+                    Used bool
                     );
 
                     CREATE TABLE IF NOT EXISTS Card(
@@ -52,6 +56,8 @@ namespace MonsterTradingCardGame
                         Damage decimal,
                         --attribute Varchar,
                         --type TIMESTAMP,
+                        Username varchar,
+                        FOREIGN KEY (Username) REFERENCES Users(Username),
                         PackID varchar,
                         FOREIGN KEY (PackID) REFERENCES Packs(PackID)
                     );
@@ -120,7 +126,7 @@ namespace MonsterTradingCardGame
         /// </summary>
         /// <param name="user"></param>
         /// <returns>Bool (Creation Succsessful: true | Not Successful: false)</returns>
-        public bool CreateSession(User user)
+        public string CreateSession(User user)
         {
             using (var connection = new NpgsqlConnection(connectionString))
             {
@@ -139,7 +145,7 @@ namespace MonsterTradingCardGame
                         try
                         {
                             command.ExecuteNonQuery();
-                            return true;
+                            return $"{user.Username}-mtcgToken";
                         }
                         catch (Exception ex)
                         {
@@ -147,7 +153,7 @@ namespace MonsterTradingCardGame
                             //The error with code 23505 is thrown when trying to insert a row that would violate a unique index or primary key.)
                             if (ex.Message.Contains("23505:"))
                             {
-                                return false;
+                                return null;
                             }
                         }
                     }
@@ -155,7 +161,7 @@ namespace MonsterTradingCardGame
 
                 connection.Close();
             }
-            return true;
+            return null;
         }
 
         /// <summary>
@@ -203,17 +209,17 @@ namespace MonsterTradingCardGame
             {
                 connection.Open();
 
-                string query = "INSERT INTO Packs (PackID) VALUES (@PackID);";
+                string query = "INSERT INTO Packs (PackID, Used) VALUES (@PackID, false);";
 
 
                 using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@PackID", pack.PackID);
-
-                    using (NpgsqlCommand writer = new NpgsqlCommand(query, connection))
-                    {
-                        command.ExecuteNonQuery();
-                    }
+                    command.ExecuteNonQuery();
+                    //using (NpgsqlCommand writer = new NpgsqlCommand(query, connection))
+                    //{
+                    //    command.ExecuteNonQuery();
+                    //}
                 }
 
                 connection.Close();
@@ -229,6 +235,7 @@ namespace MonsterTradingCardGame
         /// <param name="packUUID"></param>
         public void CreateCards(List<Card> cards, string packUUID)
         {
+            //todo => check if admintoken is used
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
@@ -243,10 +250,11 @@ namespace MonsterTradingCardGame
                         command.Parameters.AddWithValue("@Damage", card.Damage);
                         command.Parameters.AddWithValue("@PackID", packUUID);
 
-                        using (NpgsqlCommand writer = new NpgsqlCommand(query, connection))
-                        {
-                            command.ExecuteNonQuery();
-                        }
+                        command.ExecuteNonQuery();
+                        //using (NpgsqlCommand writer = new NpgsqlCommand(query, connection))
+                        //{
+                        //    command.ExecuteNonQuery();
+                        //}
                     }
                     Console.WriteLine($"Inserted Card: {card.ID}");
                 });
@@ -255,6 +263,180 @@ namespace MonsterTradingCardGame
             }
         }
 
+        //Todo: Timer that deletes old sessions or updates
+        //Also that validate user is done before doing the next db manipulations >= nicht unbedingt
+        //Exceptions and ... 
 
+
+        /// <summary>
+        /// A User is buying a pack with VC (Virtual Coins)
+        /// </summary>
+        /// <param name="token"></param>
+        public void BuyPack(string token)
+        {
+            string packid;
+            //Get a pack,
+            //Search for all cards of the packs in 
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "select * from Usersession where SessionToken = @Token";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("Token", token.Replace("Bearer ", ""));
+
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        //Check if i get Rows back => means that there is an active Session
+                        if (reader.HasRows == true)
+                        {
+                            while (reader.Read())
+                            {
+                                string username = reader.GetString(reader.GetOrdinal("username"));
+                                Console.WriteLine(username);
+                                packid = GetPackUUID();
+                                UpdatePackRelatedTransaction(packid, username);
+                            }
+                        }
+                    }
+                }
+
+                connection.Close();
+            }
+        }
+
+        public void UpdatePackRelatedTransaction(string packid, string username)
+        {
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+
+                //Update that pack is used
+                string query = "Update Packs Set used = true where packid = @PackID";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("PackID", packid);
+
+                    command.ExecuteNonQuery();
+                }
+
+
+                //Update username in cards
+                query = "Update Card Set username = @Username where packid = @PackID";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("PackID", packid);
+                    command.Parameters.AddWithValue("Username", username);
+                    command.ExecuteNonQuery();
+                }
+
+
+                //Update User Coins
+                query = "Update Users Set virtualcoins = virtualcoins - 5 where username = @Username";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("PackID", packid);
+                    command.Parameters.AddWithValue("Username", username);
+                    command.ExecuteNonQuery();
+                }
+
+                connection.Close();
+            }
+        }
+
+        public string GetPackUUID()
+        {
+            string packid = String.Empty;
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "select * from Packs where used = false limit 1";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        //Check if i get Rows back => means that there is an active Session
+                        if (reader.HasRows == true)
+                        {
+                            while (reader.Read())
+                            {
+                                packid = reader.GetString(reader.GetOrdinal("packid"));
+
+                                Console.WriteLine($"ID: {packid}");
+                            }
+                        }
+                        //Add exception that no packs available
+                    }
+                }
+
+                connection.Close();
+            }
+
+            return packid;
+        }
+
+        public string GetAllCards(string token)
+        {
+            string username = String.Empty, allCardsReturn = String.Empty;
+            Card c = null;
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "select * from Usersession where SessionToken = @Token";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("Token", token.Replace("Bearer ", ""));
+
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        //Check if i get Rows back => means that there is an active Session
+                        if (reader.HasRows == true)
+                        {
+                            while (reader.Read())
+                            {
+                                username = reader.GetString(reader.GetOrdinal("username"));
+                            }
+                        }
+                    }
+                }
+
+                query = "select * from Card where username = @Username";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("Username", username);
+
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        //Check if i get Rows back => means that there is an active Session
+                        if (reader.HasRows == true)
+                        {
+                            while (reader.Read())
+                            {
+                                username = reader.GetString(reader.GetOrdinal("username"));
+
+                                c = new Card(reader.GetString(reader.GetOrdinal("cardid")), reader.GetString(reader.GetOrdinal("cardname")), reader.GetInt32(reader.GetOrdinal("damage")));
+                                //Console.WriteLine(c.ToString());
+                                allCardsReturn += c.ToString() + "\n";
+                            }
+                        }
+                    }
+                }
+
+                connection.Close();
+            }
+
+            return allCardsReturn;
+        }
     }
 }
