@@ -15,6 +15,7 @@ namespace MonsterTradingCardGame
         public void BuyPack(string Token);
         public string GetPackUUID();
         public string GetAllCards(string token);
+        public string GetDeck(string token);
     }
 
     internal class DB : IPostgresDB
@@ -60,6 +61,15 @@ namespace MonsterTradingCardGame
                         FOREIGN KEY (Username) REFERENCES Users(Username),
                         PackID varchar,
                         FOREIGN KEY (PackID) REFERENCES Packs(PackID)
+                    );
+
+                    CREATE TABLE IF NOT EXISTS Deck(
+                        DeckID serial,
+                        Username VARCHAR,
+                    	CardID VARCHAR,
+                    	FOREIGN KEY (CardID) REFERENCES Card(CardID),
+                        FOREIGN KEY (Username) REFERENCES Users(Username),
+                    	PRIMARY KEY (CardID, Username)
                     );
                     """;
 
@@ -266,6 +276,7 @@ namespace MonsterTradingCardGame
         //Todo: Timer that deletes old sessions or updates
         //Also that validate user is done before doing the next db manipulations >= nicht unbedingt
         //Exceptions and ... 
+        // => Check if user has the crads that it adds to his deck
 
 
         /// <summary>
@@ -307,6 +318,14 @@ namespace MonsterTradingCardGame
             }
         }
 
+        /// <summary>
+        /// This method updates all nesessary things in the DB Such as
+        /// the pack being used
+        /// the cards, which belongs to a certain user now
+        /// and the Coins of a user itself, because a pack costs 5 VirtualCoins
+        /// </summary>
+        /// <param name="packid"></param>
+        /// <param name="username"></param>
         public void UpdatePackRelatedTransaction(string packid, string username)
         {
             using (var connection = new NpgsqlConnection(connectionString))
@@ -350,6 +369,10 @@ namespace MonsterTradingCardGame
             }
         }
 
+        /// <summary>
+        /// This searches for a pack in the DB that is unsed so the user can buy it
+        /// </summary>
+        /// <returns>the pack uuid which will be used</returns>
         public string GetPackUUID()
         {
             string packid = String.Empty;
@@ -383,6 +406,11 @@ namespace MonsterTradingCardGame
             return packid;
         }
 
+        /// <summary>
+        /// Get all Cards that bleonges to the user associated with the Token
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns>All Cards with all stats</returns>
         public string GetAllCards(string token)
         {
             string username = String.Empty, allCardsReturn = String.Empty;
@@ -428,6 +456,122 @@ namespace MonsterTradingCardGame
                                 c = new Card(reader.GetString(reader.GetOrdinal("cardid")), reader.GetString(reader.GetOrdinal("cardname")), reader.GetInt32(reader.GetOrdinal("damage")));
                                 //Console.WriteLine(c.ToString());
                                 allCardsReturn += c.ToString() + "\n";
+                            }
+                        }
+                    }
+                }
+
+                connection.Close();
+            }
+
+            return allCardsReturn;
+        }
+
+        /// <summary>
+        /// Assembles the Deck
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="cards"></param>
+        public void assembleDeck(string token, List<string> cards)
+        {
+            string username = String.Empty, allCardsReturn = String.Empty;
+
+
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "select * from Usersession where SessionToken = @Token";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("Token", token.Replace("Bearer ", ""));
+
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        //Check if i get Rows back => means that there is an active Session
+                        if (reader.HasRows == true)
+                        {
+                            while (reader.Read())
+                            {
+                                username = reader.GetString(reader.GetOrdinal("username"));
+                            }
+                        }
+                    }
+                }
+
+                //GetDeck
+
+                if (GetDeck(token) == String.Empty)
+                {
+                    query = "Insert Into Deck (Username, CardID) Values (@Username, @CardID)";
+
+                    using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("Username", username);
+
+                        cards.ForEach(cardID =>
+                        {
+                            if (command.Parameters.Count > 1)
+                            {
+                                command.Parameters.Remove("CardID");
+                            }
+                            command.Parameters.AddWithValue("CardID", cardID);
+                            command.ExecuteNonQuery();
+                        });
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Already has a deck");
+                    //ADD Exception
+                }
+
+                connection.Close();
+            }
+        }
+
+        public string GetDeck(string token)
+        {
+            string username = String.Empty, allCardsReturn = String.Empty, cardID = String.Empty;
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "select * from Usersession where SessionToken = @Token";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("Token", token.Replace("Bearer ", ""));
+
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        //Check if i get Rows back => means that there is an active Session
+                        if (reader.HasRows == true)
+                        {
+                            while (reader.Read())
+                            {
+                                username = reader.GetString(reader.GetOrdinal("username"));
+                            }
+                        }
+                    }
+                }
+
+                query = "select * from Deck where username = @Username";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("Username", username);
+
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        //Check if i get Rows back => means that there is an active Session
+                        if (reader.HasRows == true)
+                        {
+                            while (reader.Read())
+                            {
+                                username = reader.GetString(reader.GetOrdinal("username"));
+                                allCardsReturn += reader.GetString(reader.GetOrdinal("cardid")) + "\n";
                             }
                         }
                     }

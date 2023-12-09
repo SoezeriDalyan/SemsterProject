@@ -98,10 +98,35 @@ class Program
                         responseData = $"{responseKontrukt} All Cards: {allCards}";
                     }
                 }
+                else if (request.StartsWith("PUT /deck HTTP/1.1"))
+                {
+                    string headerToken = GetHeaderToken(request);
+                    string allCards = assembleDeck(headerToken, body);
+                    if (headerToken == String.Empty)
+                    {
+                        responseData = $"{responseKontrukt}Unauthorized";
+                    }
+                    else if (allCards != String.Empty)
+                    {
+                        responseData = $"{responseKontrukt} All Cards: {allCards}";
+                    }
+                }
+                else if (request.StartsWith("GET /deck HTTP/1.1"))
+                {
+                    string headerToken = GetHeaderToken(request);
+                    string assembledDeck = getDeck(headerToken);
+                    if (headerToken == String.Empty)
+                    {
+                        responseData = $"{responseKontrukt}Unauthorized";
+                    }
+                    else if (assembledDeck != String.Empty)
+                    {
+                        responseData = $"{responseKontrukt} Deck: {assembledDeck}";
+                    }
+                }
 
                 /*
-                 echo 8) show all acquired cards kienboec
-                 curl -X GET http://localhost:10001/cards --header "Authorization: Bearer kienboec-mtcgToken"
+                curl -X GET http://localhost:10001/deck --header "Authorization: Bearer kienboec-mtcgToken"
                 */
 
 
@@ -172,12 +197,33 @@ class Program
     /// Receives all Cards the User has
     /// </summary>
     /// <param name="headerToken"></param>
-    /// <returns></returns>
+    /// <returns>string of all Cardss</returns>
     static string GetCards(string headerToken)
     {
         return dB.GetAllCards(headerToken);
     }
 
+    //Not Done
+    static string assembleDeck(string headerToken, string body)
+    {
+        //noch verbessern
+        List<string> cardIDs = JsonConvert.DeserializeObject<List<string>>(body);
+        //check that cardsid should be 4 otherwise error
+        if (cardIDs.Count < 4)
+        {
+            return "not enough cards entered";
+        }
+        else
+        {
+            dB.assembleDeck(headerToken, cardIDs);
+            return body;
+        }
+    }
+
+    static string getDeck(string headerToken)
+    {
+        return dB.GetDeck(headerToken);
+    }
 
     /// <summary>
     /// Extracts the Token from the Header
