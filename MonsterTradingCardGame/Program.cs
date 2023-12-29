@@ -124,9 +124,42 @@ class Program
                         responseData = $"{responseKontrukt} Deck: {assembledDeck}";
                     }
                 }
+                else if (request.StartsWith("GET /users"))
+                {
+                    string headerToken = GetHeaderToken(request);
+                    string username = GetUsernameFromRequestUrl(request);
+
+                    if (headerToken == String.Empty)
+                    {
+                        responseData = $"{responseKontrukt}Unauthorized";
+                    }
+                    else if (username != String.Empty)
+                    {
+
+                        responseData = $"{responseKontrukt}: {GetUserData(username, headerToken)}";
+                    }
+                }
+                else if (request.StartsWith("PUT /users"))
+                {
+                    string headerToken = GetHeaderToken(request);
+                    string username = GetUsernameFromRequestUrl(request);
+
+                    if (headerToken == String.Empty)
+                    {
+                        responseData = $"{responseKontrukt}Unauthorized";
+                    }
+                    else if (username != String.Empty)
+                    {
+
+                        responseData = $"{responseKontrukt}: {UpdateUserData(username, headerToken, body)}";
+                    }
+                }
 
                 /*
-                curl -X GET http://localhost:10001/deck --header "Authorization: Bearer kienboec-mtcgToken"
+                curl -X GET http://localhost:10001/users/altenhof --header "Authorization: Bearer altenhof-mtcgToken"
+                
+                curl -X PUT http://localhost:10001/users/kienboec --header "Content-Type: application/json" --header 
+                "Authorization: Bearer kienboec-mtcgToken" -d "{\"Name\": \"Kienboeck\",  \"Bio\": \"me playin...\", \"Image\": \":-)\"}"
                 */
 
 
@@ -211,7 +244,7 @@ class Program
         //check that cardsid should be 4 otherwise error
         if (cardIDs.Count < 4)
         {
-            return "not enough cards entered";
+            return "not enough cards selected";
         }
         else
         {
@@ -223,6 +256,19 @@ class Program
     static string getDeck(string headerToken)
     {
         return dB.GetDeck(headerToken);
+    }
+
+    static string GetUserData(string username, string headertoken)
+    {
+        return dB.GetUserData(username, headertoken);
+    }
+
+    static string UpdateUserData(string username, string headertoken, string body)
+    {
+        User user = JsonConvert.DeserializeObject<User>(body);
+        return dB.UpdateUserData(username, headertoken, user.Image, user.Bio);
+        return "";
+        //return dB.GetUserData(username, headertoken);
     }
 
     /// <summary>
@@ -268,4 +314,34 @@ class Program
 
         return "";
     }
+
+    /// <summary>
+    /// Because of the form of the request: GET http://localhost:10001/users/username
+    /// This methodes gets the username inside the URL
+    /// </summary>
+    /// <param name="requestUrl"></param>
+    /// <returns>Username</returns>
+    static string GetUsernameFromRequestUrl(string requestUrl)
+    {
+        // Assuming the format is "/users/{username}"
+        string[] segments = requestUrl.Split('/');
+        if (segments.Length >= 3 && segments[1] == "users")
+        {
+            return segments[2].Split(" ")[0];
+        }
+        else
+        {
+            return "Unknown";
+        }
+    }
+
+    //class UpdateUserData
+    //{
+    //    [JsonPropertyName("Username")]
+    //    public string Username { get; private set; }
+    //    [JsonPropertyName("Ímage")]
+    //    public string Image { get; private set; }
+    //    [JsonPropertyName("Bio")]
+    //    public string Bio { get; private set; }
+    //}
 }

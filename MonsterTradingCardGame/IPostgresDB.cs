@@ -35,7 +35,9 @@ namespace MonsterTradingCardGame
                     CREATE TABLE IF NOT EXISTS Users(
                         Username VARCHAR unique Primary Key,
                         Password VARCHAR,
-                        VirtualCoins INTEGER
+                        VirtualCoins INTEGER,
+                    	Image Varchar,
+                    	Bio Varchar
                     );
 
                     CREATE TABLE IF NOT EXISTS UserSession(
@@ -581,6 +583,125 @@ namespace MonsterTradingCardGame
             }
 
             return allCardsReturn;
+        }
+
+        //Todo: method that just conirms the token!!!!!!!
+
+        public string GetUserData(string username, string token)
+        {
+            string usernameInSession = String.Empty, Image = String.Empty, Bio = String.Empty;
+            int VirtualCoins = 0;
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "select * from Usersession where SessionToken = @Token";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("Token", token.Replace("Bearer ", ""));
+
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        //Check if i get Rows back => means that there is an active Session
+                        if (reader.HasRows == true)
+                        {
+                            while (reader.Read())
+                            {
+                                usernameInSession = reader.GetString(reader.GetOrdinal("username"));
+                            }
+                        }
+                    }
+                }
+
+                if (usernameInSession == username)
+                {
+                    query = "select * from Users where username = @Username";
+
+                    using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("Username", username);
+
+                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        {
+                            //Check if i get Rows back => means that there is an active Session
+                            if (reader.HasRows == true)
+                            {
+                                while (reader.Read())
+                                {
+                                    if (!reader.IsDBNull(3))
+                                        Image = reader.GetString(reader.GetOrdinal("image"));
+                                    else
+                                        Image = "No image";
+                                    if (!reader.IsDBNull(4))
+                                        Bio = reader.GetString(reader.GetOrdinal("bio"));
+                                    else
+                                        Bio = "No Bio";
+
+                                    VirtualCoins = reader.GetInt32(reader.GetOrdinal("virtualcoins"));
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    return "Error: Unauthorized";
+                }
+                connection.Close();
+            }
+
+            return $"Username: {username}, VirtualCoins: {VirtualCoins}, Image: {Image}, Bio: {Bio}";
+        }
+
+        public string UpdateUserData(string username, string token, string image, string bio)
+        {
+            string usernameInSession = String.Empty, Image = String.Empty, Bio = String.Empty;
+            int VirtualCoins = 0;
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "select * from Usersession where SessionToken = @Token";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("Token", token.Replace("Bearer ", ""));
+
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        //Check if i get Rows back => means that there is an active Session
+                        if (reader.HasRows == true)
+                        {
+                            while (reader.Read())
+                            {
+                                usernameInSession = reader.GetString(reader.GetOrdinal("username"));
+                            }
+                        }
+                    }
+                }
+
+                if (usernameInSession == username)
+                {
+                    query = "UPDATE Users SET image = @Image, bio = @Bio WHERE username = @Username";
+
+                    using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("Username", username);
+                        command.Parameters.AddWithValue("Image", image);
+                        command.Parameters.AddWithValue("Bio", bio);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+                else
+                {
+                    return "Error: Unauthorized";
+                }
+                connection.Close();
+            }
+
+            return $"Updated User Succsessfuly";
         }
     }
 }
