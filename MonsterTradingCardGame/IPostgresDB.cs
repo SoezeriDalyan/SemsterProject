@@ -37,7 +37,8 @@ namespace MonsterTradingCardGame
                         Password VARCHAR,
                         VirtualCoins INTEGER,
                     	Image Varchar,
-                    	Bio Varchar
+                    	Bio Varchar,
+                        ELO INTEGER
                     );
 
                     CREATE TABLE IF NOT EXISTS UserSession(
@@ -98,8 +99,7 @@ namespace MonsterTradingCardGame
             {
                 connection.Open();
 
-                string query = "INSERT INTO Users (Username, Password, VirtualCoins) VALUES (@Username, @Password, @VirtualCoins);";
-
+                string query = "INSERT INTO Users (Username, Password, VirtualCoins, Image, Bio, ELO) VALUES (@Username, @Password, @VirtualCoins, @Image, @Bio, @ELO);";
 
                 using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
                 {
@@ -107,6 +107,9 @@ namespace MonsterTradingCardGame
                     command.Parameters.AddWithValue("@Username", user.Username);
                     command.Parameters.AddWithValue("@Password", user.Password);
                     command.Parameters.AddWithValue("@VirtualCoins", user.VirtualCoins);
+                    command.Parameters.AddWithValue("@Image", "");
+                    command.Parameters.AddWithValue("@Bio", "");
+                    command.Parameters.AddWithValue("@ELO", 100);
 
                     using (NpgsqlCommand writer = new NpgsqlCommand(query, connection))
                     {
@@ -629,15 +632,9 @@ namespace MonsterTradingCardGame
                             {
                                 while (reader.Read())
                                 {
-                                    if (!reader.IsDBNull(3))
-                                        Image = reader.GetString(reader.GetOrdinal("image"));
-                                    else
-                                        Image = "No image";
-                                    if (!reader.IsDBNull(4))
-                                        Bio = reader.GetString(reader.GetOrdinal("bio"));
-                                    else
-                                        Bio = "No Bio";
-
+                                    Image = reader.GetString(reader.GetOrdinal("image"));
+                                    Bio = reader.GetString(reader.GetOrdinal("bio"));
+                                    //Name????? Fragen Todo
                                     VirtualCoins = reader.GetInt32(reader.GetOrdinal("virtualcoins"));
                                 }
                             }
