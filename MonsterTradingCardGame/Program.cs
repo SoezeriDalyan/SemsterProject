@@ -8,6 +8,8 @@ class Program
 {
     static Pack pack = new Pack();
     static DB dB = new DB();
+    private static readonly object lockObject = new object();
+
     static async Task Main()
     {
         Console.WriteLine("Createing Tables in the Postgres database if needed");
@@ -154,6 +156,55 @@ class Program
                         responseData = $"{responseKontrukt}: {UpdateUserData(username, headerToken, body)}";
                     }
                 }
+                else
+                {
+                    TcpClient client2 = null;
+                    NetworkStream networkStream2 = null;
+                    string headerToken = GetHeaderToken(request);
+                    string headerToken2 = "";
+
+                    responseBytes = Encoding.UTF8.GetBytes(responseKontrukt + "You are Palyer 1, and currently waiting in the Lobby");
+                    networkStream.Write(responseBytes, 0, responseBytes.Length);
+
+                    Task secondPlayerTask = Task.Run(async () =>
+                    {
+                        client2 = await listener.AcceptTcpClientAsync();
+                        Console.WriteLine("Second player connected");
+
+                        networkStream2 = client2.GetStream();
+
+                        var requestBytes2 = new byte[1024];
+                        await networkStream2.ReadAsync(requestBytes, 0, requestBytes.Length);
+                        var request2 = Encoding.UTF8.GetString(requestBytes);
+
+                        headerToken2 = GetHeaderToken(request2);
+
+                        //Verify Token and get username
+
+                        var responseBytes2 = Encoding.UTF8.GetBytes(responseKontrukt + "You are Palyer 2, and currently waiting in the Lobby");
+                        networkStream2.Write(responseBytes2, 0, responseBytes2.Length);
+
+                    });
+
+                    await secondPlayerTask;
+
+                    var responseBytes2 = Encoding.UTF8.GetBytes(responseKontrukt + "Let the battle begin");
+                    networkStream2.Write(responseBytes2, 0, responseBytes2.Length);
+
+                    responseBytes = Encoding.UTF8.GetBytes(responseKontrukt + "Let the battle begin");
+                    networkStream.Write(responseBytes, 0, responseBytes.Length);
+
+
+                    var p1Deck = dB.GetCards(getDeck(headerToken).Split("\n").ToList<string>(), headerToken);
+                    var p2Deck = dB.GetCards(getDeck(headerToken2).Split("\n").ToList<string>(), headerToken2);
+
+
+                    Battle b = new Battle(dB, new List<Player> { new Player(client, headerToken, p1Deck), new Player(client2, headerToken2, p2Deck) });
+
+
+
+                    responseData = $"{responseKontrukt}:";
+                }
 
                 /*
                 curl -X GET http://localhost:10001/users/altenhof --header "Authorization: Bearer altenhof-mtcgToken"
@@ -168,7 +219,7 @@ class Program
 
                 Console.WriteLine(responseData);
                 responseBytes = Encoding.UTF8.GetBytes(responseData);
-                await networkStream.WriteAsync(responseBytes, 0, responseBytes.Length);
+                networkStream.Write(responseBytes, 0, responseBytes.Length);
             }
         }
     }
@@ -267,8 +318,6 @@ class Program
     {
         User user = JsonConvert.DeserializeObject<User>(body);
         return dB.UpdateUserData(username, headertoken, user.Image, user.Bio);
-        return "";
-        //return dB.GetUserData(username, headertoken);
     }
 
     /// <summary>
@@ -334,14 +383,6 @@ class Program
             return "Unknown";
         }
     }
-
-    //class UpdateUserData
-    //{
-    //    [JsonPropertyName("Username")]
-    //    public string Username { get; private set; }
-    //    [JsonPropertyName("Ímage")]
-    //    public string Image { get; private set; }
-    //    [JsonPropertyName("Bio")]
-    //    public string Bio { get; private set; }
-    //}
 }
+
+

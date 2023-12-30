@@ -20,6 +20,12 @@ namespace MonsterTradingCardGame
 
     internal class DB : IPostgresDB
     {
+        //Todo: Timer that deletes old sessions or updates
+        //Also that validate user is done before doing the next db manipulations >= nicht unbedingt
+        //Exceptions and ... 
+        // => Check if user has the crads that it adds to his deck
+        //Todo: method that just conirms the token!!!!!!!
+
         private string connectionString = "Host=localhost;Port=5432;Username=postgres;Password=password;Database=postgres";
 
         /// <summary>
@@ -58,8 +64,8 @@ namespace MonsterTradingCardGame
                         CardID varchar Primary Key,
                         CardName VARCHAR,
                         Damage decimal,
-                        --attribute Varchar,
-                        --type TIMESTAMP,
+                        Attribute Varchar,
+                        Type Varchar,
                         Username varchar,
                         FOREIGN KEY (Username) REFERENCES Users(Username),
                         PackID varchar,
@@ -256,20 +262,18 @@ namespace MonsterTradingCardGame
                 connection.Open();
                 cards.ForEach(card =>
                 {
-                    string query = " INSERT INTO Card(CardID, CardName, Damage, PackID) VALUES (@CardID, @CardName, @Damage, @PackID)";
+                    string query = " INSERT INTO Card(CardID, CardName, Damage, Attribute, Type, PackID) VALUES (@CardID, @CardName, @Damage, @Attribute, @Type, @PackID)";
 
                     using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@CardID", card.ID);
                         command.Parameters.AddWithValue("@CardName", card.Name);
                         command.Parameters.AddWithValue("@Damage", card.Damage);
+                        command.Parameters.AddWithValue("@Attribute", card.Attribute.ToString());
+                        command.Parameters.AddWithValue("@Type", card.Type.ToString());
                         command.Parameters.AddWithValue("@PackID", packUUID);
 
                         command.ExecuteNonQuery();
-                        //using (NpgsqlCommand writer = new NpgsqlCommand(query, connection))
-                        //{
-                        //    command.ExecuteNonQuery();
-                        //}
                     }
                     Console.WriteLine($"Inserted Card: {card.ID}");
                 });
@@ -277,12 +281,6 @@ namespace MonsterTradingCardGame
                 connection.Close();
             }
         }
-
-        //Todo: Timer that deletes old sessions or updates
-        //Also that validate user is done before doing the next db manipulations >= nicht unbedingt
-        //Exceptions and ... 
-        // => Check if user has the crads that it adds to his deck
-
 
         /// <summary>
         /// A User is buying a pack with VC (Virtual Coins)
@@ -699,6 +697,43 @@ namespace MonsterTradingCardGame
             }
 
             return $"Updated User Succsessfuly";
+        }
+
+
+        public List<Card> GetCards(List<string> cardIDs, string token)
+        {
+            List<Card> cards = new List<Card>();
+            foreach (var id in cardIDs)
+            {
+                string username = String.Empty, allCardsReturn = String.Empty, cardID = String.Empty;
+                using (var connection = new NpgsqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string query = "select * from Card where cardid = @CardId";
+
+                    using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("CardId", id);
+
+                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        {
+                            //Check if i get Rows back => means that there is an active Session
+                            if (reader.HasRows == true)
+                            {
+                                while (reader.Read())
+                                {
+                                    cards.Add(new Card(reader.GetString(reader.GetOrdinal("username")), reader.GetString(reader.GetOrdinal("cardname")), reader.GetDouble(reader.GetOrdinal("damage"))));
+                                }
+                            }
+                        }
+                    }
+
+                    connection.Close();
+                }
+            }
+
+            return cards;
         }
     }
 }
