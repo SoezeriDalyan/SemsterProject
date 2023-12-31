@@ -26,8 +26,7 @@ namespace MonsterTradingCardGame
             Player p2 = Players[1];
             Card roundWinner = null;
 
-            SendMessages(p1.TcpClient, "Let the battle beginn");
-            SendMessages(p2.TcpClient, "Let the battle beginn");
+            SendToBoth("Let the battle beginn");
 
             int rounds = 1;
             while (rounds < 100)
@@ -67,16 +66,18 @@ namespace MonsterTradingCardGame
                     Console.WriteLine($"Winner in Round {rounds}: none");
                 }
 
-                //Check if Decks are not 0 for each player => or one has 8 Cards
+                //Check if Decks are not 0 for each player
 
                 if (p1.Deck.Count == 0)
                 {
+                    //SendtoBoth and Calculate ELO
                     Console.WriteLine("Winner = Player2: " + p2.Name);
                     break;
                 }
 
                 if (p2.Deck.Count == 0)
                 {
+                    //SendtoBoth and Calculate ELO
                     Console.WriteLine("Winner = Player1: " + p1.Name);
                     break;
                 }
@@ -88,6 +89,7 @@ namespace MonsterTradingCardGame
 
             if (rounds == 100)
             {
+                //SendtoBoth and Calculate ELO
                 Console.WriteLine("Oh no, it a Draw");
             }
 
@@ -197,7 +199,7 @@ namespace MonsterTradingCardGame
                 return true;
             }
 
-            //Es gibt kein Wizzard Lan und Kraken auch nicht??
+            //Es gibt kein Wizzard und Kraken auch nicht??
             if (c1.Type == Type.Spell && c1.Attribute == Attribut.Water && c2.Name == "Knight")
             {
                 return true;

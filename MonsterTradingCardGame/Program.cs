@@ -6,9 +6,8 @@ using System.Text;
 
 class Program
 {
-    static Pack pack = new Pack();
     static DB dB = new DB();
-    private static readonly object lockObject = new object();
+    public delegate void RouteDelegate();
 
     static async Task Main()
     {
@@ -23,7 +22,7 @@ class Program
 
         string responseKontrukt = "HTTP/1.1 200 OK\r\nContent-Type: text/application/json\r\n\r\n";
         string responseData = String.Empty;
-        byte[] responseBytes = null;
+        byte[]? responseBytes = null;
 
         while (true)
         {
@@ -32,137 +31,60 @@ class Program
             {
                 var requestBytes = new byte[1024]; //Set byte length, TCP cuts Packest at 1024 bytes
                 await networkStream.ReadAsync(requestBytes, 0, requestBytes.Length);
-                var request = Encoding.UTF8.GetString(requestBytes);
 
-                string body = GetRequestBody(request);
+                Request request1 = new Request(requestBytes);
 
-                //implement improvements and correct the response => Json type
+
                 //heandle user createn or login request
-                if (request.StartsWith("POST /users HTTP/1.1"))
+                if (request1.Route == "POST /users HTTP/1.1" || request1.Route == "POST /sessions HTTP/1.1")
                 {
-                    if (HandleUserCreation(body))
-                    {
-                        //Successful
-                        responseData = $"{responseKontrukt}Created Succsesfully";
-                    }
-                    else
-                    {
-                        //Not Successful
-                        responseData = $"{responseKontrukt}Creation Failed, Username exists already";
-                    }
+                    responseData = HandleUserCreationAndLogin(request1.Body, request1.Route);
                 }
-                else if (request.StartsWith("POST /sessions HTTP/1.1"))
+                else if (request1.Token == String.Empty)
                 {
-                    if (HandleUserLogin(body) != null)
-                    {
-                        //Successful
-                        responseData = $"{responseKontrukt}Login Succsesfully";
-                    }
-                    else
-                    {
-                        //Not Successful
-                        responseData = $"{responseKontrukt}Login Failed";
-                    }
+                    responseData = "Error: Unauthorized"; //verbessern
                 }
-                else if (request.StartsWith("POST /packages HTTP/1.1"))
+                else if (request1.Route == "POST /packages HTTP/1.1")
                 {
-                    string headerToken = GetHeaderToken(request);
-                    if (headerToken == String.Empty)
-                    {
-                        responseData = $"{responseKontrukt}Unauthorized";
-                    }
-                    else if (HandlePackCreation(body, headerToken))
-                    {
-                        responseData = $"{responseKontrukt}Pack Created Succsesfully";
-                    }
+                    responseData = HandlePackCreation(request1.Body, request1.Token);
                 }
-                else if (request.StartsWith("POST /transactions/packages HTTP/1.1"))
+                else if (request1.Route == "POST /transactions/packages HTTP/1.1")
                 {
-                    string headerToken = GetHeaderToken(request);
-                    if (headerToken == String.Empty)
-                    {
-                        responseData = $"{responseKontrukt}Unauthorized";
-                    }
-                    else if (BuysPack(headerToken))
-                    {
-                        responseData = $"{responseKontrukt}Transaction Successful";
-                    }
+                    responseData = BuysPack(request1.Token);
                 }
-                else if (request.StartsWith("GET /cards HTTP/1.1"))
+                else if (request1.Route == "GET /cards HTTP/1.1")
                 {
-                    string headerToken = GetHeaderToken(request);
-                    string allCards = GetCards(headerToken);
-                    if (headerToken == String.Empty)
-                    {
-                        responseData = $"{responseKontrukt}Unauthorized";
-                    }
-                    else if (allCards != String.Empty)
-                    {
-                        responseData = $"{responseKontrukt} All Cards: {allCards}";
-                    }
+                    responseData = GetCards(request1.Token);
                 }
-                else if (request.StartsWith("PUT /deck HTTP/1.1"))
+                else if (request1.Route == "PUT /deck HTTP/1.1")
                 {
-                    string headerToken = GetHeaderToken(request);
-                    string allCards = assembleDeck(headerToken, body);
-                    if (headerToken == String.Empty)
-                    {
-                        responseData = $"{responseKontrukt}Unauthorized";
-                    }
-                    else if (allCards != String.Empty)
-                    {
-                        responseData = $"{responseKontrukt} All Cards: {allCards}";
-                    }
+                    responseData = assembleDeck(request1.Token, request1.Body);
                 }
-                else if (request.StartsWith("GET /deck HTTP/1.1"))
+                else if (request1.Route == "GET /deck HTTP/1.1")
                 {
-                    string headerToken = GetHeaderToken(request);
-                    string assembledDeck = getDeck(headerToken);
-                    if (headerToken == String.Empty)
-                    {
-                        responseData = $"{responseKontrukt}Unauthorized";
-                    }
-                    else if (assembledDeck != String.Empty)
-                    {
-                        responseData = $"{responseKontrukt} Deck: {assembledDeck}";
-                    }
+                    responseData = $"Success: Current Deck: {getDeck(request1.Token)}";
                 }
-                else if (request.StartsWith("GET /users"))
-                {
-                    string headerToken = GetHeaderToken(request);
-                    string username = GetUsernameFromRequestUrl(request);
 
-                    if (headerToken == String.Empty)
+                else if (request1.Route.StartsWith("GET /users"))
+                {
+                    if (request1.UsernameInRoute != String.Empty)
                     {
-                        responseData = $"{responseKontrukt}Unauthorized";
-                    }
-                    else if (username != String.Empty)
-                    {
-
-                        responseData = $"{responseKontrukt}: {GetUserData(username, headerToken)}";
+                        responseData = GetUserData(request1.UsernameInRoute, request1.Token);
                     }
                 }
-                else if (request.StartsWith("PUT /users"))
+
+                else if (request1.Route.StartsWith("PUT /users"))
                 {
-                    string headerToken = GetHeaderToken(request);
-                    string username = GetUsernameFromRequestUrl(request);
-
-                    if (headerToken == String.Empty)
+                    if (request1.UsernameInRoute != String.Empty)
                     {
-                        responseData = $"{responseKontrukt}Unauthorized";
-                    }
-                    else if (username != String.Empty)
-                    {
-
-                        responseData = $"{responseKontrukt}: {UpdateUserData(username, headerToken, body)}";
+                        responseData = UpdateUserData(request1.UsernameInRoute, request1.Token, request1.Body);
                     }
                 }
-                else
+                else if (request1.Route == "POST /battles HTTP/1.1")
                 {
-                    TcpClient client2 = null;
-                    NetworkStream networkStream2 = null;
-                    string headerToken = GetHeaderToken(request);
-                    string headerToken2 = "";
+                    TcpClient? client2 = null;
+                    NetworkStream? networkStream2 = null;
+                    Request? request2 = null;
 
                     responseBytes = Encoding.UTF8.GetBytes(responseKontrukt + "You are Palyer 1, and currently waiting in the Lobby");
                     networkStream.Write(responseBytes, 0, responseBytes.Length);
@@ -176,10 +98,7 @@ class Program
 
                         var requestBytes2 = new byte[1024];
                         await networkStream2.ReadAsync(requestBytes, 0, requestBytes.Length);
-                        var request2 = Encoding.UTF8.GetString(requestBytes);
-
-                        headerToken2 = GetHeaderToken(request2);
-
+                        request2 = new Request(requestBytes);
                         //Verify Token and get username
 
                         var responseBytes2 = Encoding.UTF8.GetBytes(responseKontrukt + "You are Palyer 2, and currently waiting in the Lobby");
@@ -189,25 +108,23 @@ class Program
 
                     await secondPlayerTask;
 
-                    var p1Deck = dB.GetCards(getDeck(headerToken).Split("\n").ToList<string>(), headerToken);
-                    var p2Deck = dB.GetCards(getDeck(headerToken2).Split("\n").ToList<string>(), headerToken2);
+                    var p1Deck = dB.GetCards(MapDeckList(getDeck(request1.Token).Split("\n").ToList<string>()), request1.Token);
+                    var p2Deck = dB.GetCards(MapDeckList(getDeck(request2.Token).Split("\n").ToList<string>()), request2.Token);
 
+                    Battle b = new Battle(dB, new List<Player> { new Player(client, request1.Token, p1Deck), new Player(client2, request2.Token, p2Deck) });
 
-                    Battle b = new Battle(dB, new List<Player> { new Player(client, headerToken, p1Deck), new Player(client2, headerToken2, p2Deck) });
+                    //responseData = $"{responseKontrukt}:";
 
-                    responseData = $"{responseKontrukt}:";
                 }
 
                 /*
                 
                 */
 
+                Response response = new Response(responseData);
+                string res = response.ResConstruct + JsonConvert.SerializeObject(response);
 
-
-
-
-                Console.WriteLine(responseData);
-                responseBytes = Encoding.UTF8.GetBytes(responseData);
+                responseBytes = Encoding.UTF8.GetBytes(res);
                 networkStream.Write(responseBytes, 0, responseBytes.Length);
             }
         }
@@ -218,52 +135,31 @@ class Program
     /// I Deserialize the Json object into User object and pass it to the Method which handles the Database communication;
     /// </summary>
     /// <param name="body"></param>
-    /// <returns>A bool, which indicates if the creation was succesfull or not (true = yes | false = no)</returns>
-    static bool HandleUserCreation(string body)
+    /// <returns>A string message like Format = Status, Message, Data (if needed)</returns>
+    static string HandleUserCreationAndLogin(string body, string route)
     {
-        User user = JsonConvert.DeserializeObject<User>(body);
-        return dB.AddUser(user);
+        User? user = JsonConvert.DeserializeObject<User>(body);
+
+        if (route == "POST /users HTTP/1.1")
+            return dB.AddUser(user);
+        else
+            return dB.CreateSession(user);
     }
 
-    /// <summary>
-    /// I Deserialize the Json object into User object and pass it to the Method which handles the Database communication;
-    /// </summary>
-    /// <param name="body"></param>
-    /// <returns></returns>
-    static string HandleUserLogin(string body)
+
+    static string HandlePackCreation(string body, string headerToken)
     {
-        User user = JsonConvert.DeserializeObject<User>(body);
-        return dB.CreateSession(user);
-    }
-
-    static bool HandlePackCreation(string body, string headerToken)
-    {
-
-        //JsonConvert.DeserializeObject<List<Card>>(body).ForEach(x => Console.WriteLine($"{x.ID} {x.Name} {x.Damage}"));
-
-        dB.CreatePackandCards(JsonConvert.DeserializeObject<List<Card>>(body), headerToken);
-
-        ////Check if there is a User with the same Username
-        //if (sessions.Find(x => x.User.Username == user.Username) == null && users.Find(x => x.Username == user.Username) != null)
-        //{
-        //    sessions.Add(new Session(user, true));
-        //    return true;
-        //}
-        //else
-        //    return false;
-
-        return true;
+        return dB.CreatePackandCards(JsonConvert.DeserializeObject<List<Card>>(body), headerToken); ;
     }
 
     /// <summary>
     /// Saves and updates everything in the database
     /// </summary>
     /// <param name="headerToken"></param>
-    /// <returns></returns>
-    static bool BuysPack(string headerToken)
+    /// <returns>Message</returns>
+    static string BuysPack(string headerToken)
     {
-        dB.BuyPack(headerToken);
-        return true;
+        return dB.BuyPack(headerToken);
     }
 
     /// <summary>
@@ -279,22 +175,23 @@ class Program
     //Not Done
     static string assembleDeck(string headerToken, string body)
     {
-        //noch verbessern
-        List<string> cardIDs = JsonConvert.DeserializeObject<List<string>>(body);
+        //returns card ids that are now the deck
+        List<string>? cardIDs = JsonConvert.DeserializeObject<List<string>>(body);
         //check that cardsid should be 4 otherwise error
         if (cardIDs.Count < 4)
         {
-            return "not enough cards selected";
+            Console.WriteLine("Not enough cards selected");
+            return "Error: Not enough cards selected";
         }
         else
         {
-            dB.assembleDeck(headerToken, cardIDs);
-            return body;
+            return dB.assembleDeck(headerToken, cardIDs);
         }
     }
 
     static string getDeck(string headerToken)
     {
+        //will return actual cards
         return dB.GetDeck(headerToken);
     }
 
@@ -305,72 +202,13 @@ class Program
 
     static string UpdateUserData(string username, string headertoken, string body)
     {
-        User user = JsonConvert.DeserializeObject<User>(body);
+        User? user = JsonConvert.DeserializeObject<User>(body);
         return dB.UpdateUserData(username, headertoken, user.Image, user.Bio);
     }
 
-    /// <summary>
-    /// Extracts the Token from the Header
-    /// </summary>
-    /// <param name="request"></param>
-    /// <returns>Example: Authorization: Bearer Token; Output = Bearer Token</returns>
-    static string GetHeaderToken(string request)
+    static List<string> MapDeckList(List<string> cards)
     {
-        string[] lines = request.Split('\n');
-        foreach (string line in lines)
-        {
-            if (line.Contains(":") && line.Contains("Authorization"))
-            {
-                string[] header = line.Split(':');
-                string headerValue = header[1].Trim();
-                return headerValue;
-            }
-        }
-
-        return String.Empty;
-    }
-
-    /// <summary>
-    /// Get the Body Data of the Request.
-    /// The Body contains the Date in a Json format
-    /// </summary>
-    /// <param name="request"></param>
-    /// <returns>The Json Data as String</returns>
-    static string GetRequestBody(string request)
-    {
-        string[] requestLines = request.Split('\n');
-
-        for (int i = 1; i < requestLines.Length; i++)
-        {
-            if (string.IsNullOrWhiteSpace(requestLines[i]))
-            {
-                // Headers end, and the body begins
-                int bodyStartIndex = i + 1;
-                return requestLines.Length > bodyStartIndex ? requestLines[bodyStartIndex].Trim() : "";
-            }
-        }
-
-        return "";
-    }
-
-    /// <summary>
-    /// Because of the form of the request: GET http://localhost:10001/users/username
-    /// This methodes gets the username inside the URL
-    /// </summary>
-    /// <param name="requestUrl"></param>
-    /// <returns>Username</returns>
-    static string GetUsernameFromRequestUrl(string requestUrl)
-    {
-        // Assuming the format is "/users/{username}"
-        string[] segments = requestUrl.Split('/');
-        if (segments.Length >= 3 && segments[1] == "users")
-        {
-            return segments[2].Split(" ")[0];
-        }
-        else
-        {
-            return "Unknown";
-        }
+        return cards.Select(x => x.Split(",")[0]).ToList();
     }
 }
 

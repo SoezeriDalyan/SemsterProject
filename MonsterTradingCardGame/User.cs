@@ -21,7 +21,7 @@ namespace MonsterTradingCardGame
         {
             Username = username;
             Password = password;
-            VirtualCoins = 100;
+            VirtualCoins = 20;
             Bio = bio;
             Image = image;
             Name = name;

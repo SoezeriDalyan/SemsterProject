@@ -45,7 +45,7 @@ namespace MonsterTradingCardGame
         public override string? ToString()
         {
 
-            return $"{ID} {Name} {Damage} {Attribute} {Type}";
+            return $"ID({ID}) Name({Name}) Damage({Damage}) Attribut({Attribute.ToString()}) Type({Type.ToString()})";
         }
     }
 }
