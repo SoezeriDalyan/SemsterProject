@@ -36,6 +36,7 @@ class Program
 
                 string body = GetRequestBody(request);
 
+                //implement improvements and correct the response => Json type
                 //heandle user createn or login request
                 if (request.StartsWith("POST /users HTTP/1.1"))
                 {
@@ -188,29 +189,17 @@ class Program
 
                     await secondPlayerTask;
 
-                    var responseBytes2 = Encoding.UTF8.GetBytes(responseKontrukt + "Let the battle begin");
-                    networkStream2.Write(responseBytes2, 0, responseBytes2.Length);
-
-                    responseBytes = Encoding.UTF8.GetBytes(responseKontrukt + "Let the battle begin");
-                    networkStream.Write(responseBytes, 0, responseBytes.Length);
-
-
                     var p1Deck = dB.GetCards(getDeck(headerToken).Split("\n").ToList<string>(), headerToken);
                     var p2Deck = dB.GetCards(getDeck(headerToken2).Split("\n").ToList<string>(), headerToken2);
 
 
                     Battle b = new Battle(dB, new List<Player> { new Player(client, headerToken, p1Deck), new Player(client2, headerToken2, p2Deck) });
 
-
-
                     responseData = $"{responseKontrukt}:";
                 }
 
                 /*
-                curl -X GET http://localhost:10001/users/altenhof --header "Authorization: Bearer altenhof-mtcgToken"
                 
-                curl -X PUT http://localhost:10001/users/kienboec --header "Content-Type: application/json" --header 
-                "Authorization: Bearer kienboec-mtcgToken" -d "{\"Name\": \"Kienboeck\",  \"Bio\": \"me playin...\", \"Image\": \":-)\"}"
                 */
 
 
