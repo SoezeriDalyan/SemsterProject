@@ -7,9 +7,9 @@ namespace MonsterTradingCardGame
     internal class Card
     {
         [JsonPropertyName("Id")]
-        public string ID { get; set; }
+        public string ID { get; private set; }
         [JsonPropertyName("Name")]
-        public string Name { get; private set; }
+        public string Name { get; set; }
         [JsonPropertyName("Damage")]
         public double Damage { get; private set; }
 
@@ -46,6 +46,12 @@ namespace MonsterTradingCardGame
         {
 
             return $"ID({ID}) Name({Name}) Damage({Damage}) Attribut({Attribute.ToString()}) Type({Type.ToString()})";
+        }
+
+        public string BattleString()
+        {
+
+            return $"Name({Name}) Damage({Damage}) TempDamage({TempDamage})";
         }
     }
 }

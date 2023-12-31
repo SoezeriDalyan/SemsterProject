@@ -111,9 +111,9 @@ class Program
                     var p1Deck = dB.GetCards(MapDeckList(getDeck(request1.Token).Split("\n").ToList<string>()), request1.Token);
                     var p2Deck = dB.GetCards(MapDeckList(getDeck(request2.Token).Split("\n").ToList<string>()), request2.Token);
 
-                    Battle b = new Battle(dB, new List<Player> { new Player(client, request1.Token, p1Deck), new Player(client2, request2.Token, p2Deck) });
+                    Battle b = new Battle(dB, new List<Player> { new Player(client, dB.GetUserDataFromSession(request1.Token), p1Deck), new Player(client2, dB.GetUserDataFromSession(request2.Token), p2Deck) });
 
-                    //responseData = $"{responseKontrukt}:";
+                    responseData = $"Success: Have a good day";
 
                 }
 

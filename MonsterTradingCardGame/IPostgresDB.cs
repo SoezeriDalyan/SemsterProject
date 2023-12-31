@@ -34,11 +34,11 @@ namespace MonsterTradingCardGame
             {
                 connection.Open();//open Connection
                 var query = """
-                    drop table if exists deck;
-                    drop table if exists Card;
-                    drop table if exists Packs;
-                    drop table if exists usersession;
-                    drop table if exists users;
+                    --drop table if exists deck;
+                    --drop table if exists Card;
+                    --drop table if exists Packs;
+                    --drop table if exists usersession;
+                    --drop table if exists users;
 
                     CREATE TABLE IF NOT EXISTS Users(
                         Username VARCHAR unique Primary Key,
