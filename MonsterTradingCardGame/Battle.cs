@@ -15,16 +15,15 @@ namespace MonsterTradingCardGame
         {
             DatabaseConnection = databaseConnection;
             Players = players;
-
-            BeginnTheBattle();
         }
 
 
-        public void BeginnTheBattle()
+        public string BeginnTheBattle()
         {
             Player p1 = Players[0];
             Player p2 = Players[1];
             Card roundWinner = null;
+            string seperator = "\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////";
 
             SendToBoth("Let the battle beginn");
 
@@ -34,7 +33,7 @@ namespace MonsterTradingCardGame
                 c1 = p1.Deck[rnd.Next(p1.Deck.Count)];
                 c2 = p2.Deck[rnd.Next(p2.Deck.Count)];
 
-                string fight = $"\n\n({p1.Name}): {c1.BattleString()} fights against ({p2.Name}): {c2.BattleString()}";
+                string fight = $"{seperator}\nRound: {rounds}\n({p1.Name}): {c1.BattleString()} fights against ({p2.Name}): {c2.BattleString()}";
 
                 Console.WriteLine(fight);
                 SendToBoth(fight);
@@ -50,7 +49,7 @@ namespace MonsterTradingCardGame
                         p1.Deck.Add(c2);
 
                         Console.WriteLine($"Winner in Round {rounds}: " + p1.Name);
-                        SendToBoth($"\nWinner in Round {rounds}: " + p1.Name);
+                        SendToBoth($"\n\nWinner in Round {rounds}: " + p1.Name + seperator + "\n");
                     }
                     else
                     {
@@ -58,15 +57,17 @@ namespace MonsterTradingCardGame
                         p2.Deck.Add(c1);
 
                         Console.WriteLine($"Winner in Round {rounds}: " + p2.Name);
-                        SendToBoth($"\nWinner in Round {rounds}: " + p2.Name);
+                        SendToBoth($"\n\nWinner in Round {rounds}: " + p2.Name + seperator + "\n");
                     }
 
                     Console.WriteLine(p1.Deck.Count);
                     Console.WriteLine(p2.Deck.Count);
+
+                    SendToBoth($"\n\n{p1.Name} has {p1.Deck.Count} cards \n{p2.Name} has {p2.Deck.Count} cards\n\n");
                 }
                 else
                 {
-                    SendToBoth($"\nWinner in Round {rounds}: none");
+                    SendToBoth($"\n\nWinner in Round {rounds}: none{seperator}" + "\n");
                     Console.WriteLine($"Winner in Round {rounds}: none");
                 }
 
@@ -74,21 +75,19 @@ namespace MonsterTradingCardGame
 
                 if (p1.Deck.Count == 0)
                 {
-                    //SendtoBoth and Calculate ELO
                     Console.WriteLine("Winner = Player2: " + p2.Name);
-                    SendToBoth("\nWinner = Player2: " + p2.Name);
-                    break;
+                    UpdateElo(p2, p1);
+                    return $"Winner = {p2.Name}";
                 }
 
                 if (p2.Deck.Count == 0)
                 {
-                    //SendtoBoth and Calculate ELO
                     Console.WriteLine("Winner = Player1: " + p1.Name);
-                    SendToBoth("\nWinner = Player1: " + p1.Name);
-                    break;
+                    UpdateElo(p1, p2);
+                    return $"Winner = {p1.Name}";
                 }
 
-
+                Thread.Sleep(500);
 
                 rounds++;
             }
@@ -97,9 +96,15 @@ namespace MonsterTradingCardGame
             {
                 //SendtoBoth and Calculate ELO
                 Console.WriteLine("Oh no, its a Draw");
-                SendToBoth("\nOh no, its a Draw");
+                SendToBoth("\nOh no, its a Draw\n");
             }
 
+            return "Its a draw";
+        }
+
+        public void UpdateElo(Player winner, Player looser)
+        {
+            DatabaseConnection.UpdateElo(winner, looser);
         }
 
         public Card CheckRoundWinner(string n1, string n2)
@@ -114,7 +119,7 @@ namespace MonsterTradingCardGame
             string fightAfterEffect = $"\n({n1}): {c1.BattleString()} fights against ({n2}): {c2.BattleString()}";
 
             Console.WriteLine(fightAfterEffect);
-            SendToBoth("\nAfter Effect\n" + fightAfterEffect);
+            SendToBoth("\nAfter Effect" + fightAfterEffect);
 
             //Check special Cases
             Card c = SpecialCase();
@@ -139,7 +144,7 @@ namespace MonsterTradingCardGame
             if (CheckEffectivnes(c1, c2))
             {
                 Console.WriteLine("Card 1 to Card 2" + CheckEffectivnes(c1, c2));
-                SendToBoth("\nCard 1 Effects Card 2 ");
+                SendToBoth($"\n{c1.Name} Effects {c2.Name}");
                 c1.EffectDamage(2);
                 c2.EffectDamage(0.5);
 
@@ -147,7 +152,7 @@ namespace MonsterTradingCardGame
             else if (CheckEffectivnes(c2, c1))
             {
                 Console.WriteLine("Card 2 to Card 1" + CheckEffectivnes(c2, c1));
-                SendToBoth("\nCard 2 to Card 1");
+                SendToBoth($"\n{c2.Name} Effects {c1.Name}");
                 c1.EffectDamage(0.5);
                 c2.EffectDamage(2);
             }
@@ -156,7 +161,6 @@ namespace MonsterTradingCardGame
                 c1.EffectDamage(1);
                 c2.EffectDamage(1);
             }
-
         }
 
         public bool CheckEffectivnes(Card c1, Card c2)
@@ -193,7 +197,7 @@ namespace MonsterTradingCardGame
             if (CheckSpecialCase(c2, c1))
             {
                 Console.WriteLine("Card 2 to Card 1" + CheckSpecialCase(c2, c1));
-                SendToBoth("\nCard 1 cant win against Card 2\n");
+                SendToBoth("\nCard 1 cant win against Card 2");
                 return c2;
             }
 

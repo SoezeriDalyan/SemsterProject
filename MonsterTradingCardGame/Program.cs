@@ -24,6 +24,10 @@ class Program
         string responseData = String.Empty;
         byte[]? responseBytes = null;
 
+        TcpClient? client2 = null;
+        NetworkStream? networkStream2 = null;
+        Request? request2 = null;
+
         while (true)
         {
             using (var client = await listener.AcceptTcpClientAsync())//Accept Connection from Clients
@@ -40,27 +44,37 @@ class Program
                 {
                     responseData = HandleUserCreationAndLogin(request1.Body, request1.Route);
                 }
+
                 else if (request1.Token == String.Empty)
                 {
                     responseData = "Error: Unauthorized"; //verbessern
                 }
+
                 else if (request1.Route == "POST /packages HTTP/1.1")
                 {
                     responseData = HandlePackCreation(request1.Body, request1.Token);
                 }
+
                 else if (request1.Route == "POST /transactions/packages HTTP/1.1")
                 {
                     responseData = BuysPack(request1.Token);
                 }
+
                 else if (request1.Route == "GET /cards HTTP/1.1")
                 {
                     responseData = GetCards(request1.Token);
                 }
+
                 else if (request1.Route == "PUT /deck HTTP/1.1")
                 {
                     responseData = assembleDeck(request1.Token, request1.Body);
                 }
+
                 else if (request1.Route == "GET /deck HTTP/1.1")
+                {
+                    responseData = $"Success: Current Deck: {JsonConvert.SerializeObject(dB.GetCards(MapDeckList(getDeck(request1.Token).Split("\n").ToList<string>()), request1.Token)).Replace(":", ".")}";
+                }
+                else if (request1.Route == "GET /deck?format=plain HTTP/1.1")
                 {
                     responseData = $"Success: Current Deck: {getDeck(request1.Token)}";
                 }
@@ -80,12 +94,19 @@ class Program
                         responseData = UpdateUserData(request1.UsernameInRoute, request1.Token, request1.Body);
                     }
                 }
+
+                else if (request1.Route == "GET /stats HTTP/1.1")
+                {
+                    responseData = $"Success:Your Elo = {dB.GetStats(request1.Token)}";
+                }
+
+                else if (request1.Route == "GET /scoreboard HTTP/1.1")
+                {
+                    responseData = $"Success:Current Scoreboard:{JsonConvert.SerializeObject(dB.GetScoreBoard(request1.Token)).Replace(":", ".")}";
+                }
+
                 else if (request1.Route == "POST /battles HTTP/1.1")
                 {
-                    TcpClient? client2 = null;
-                    NetworkStream? networkStream2 = null;
-                    Request? request2 = null;
-
                     responseBytes = Encoding.UTF8.GetBytes(responseKontrukt + "You are Palyer 1, and currently waiting in the Lobby");
                     networkStream.Write(responseBytes, 0, responseBytes.Length);
 
@@ -112,20 +133,19 @@ class Program
                     var p2Deck = dB.GetCards(MapDeckList(getDeck(request2.Token).Split("\n").ToList<string>()), request2.Token);
 
                     Battle b = new Battle(dB, new List<Player> { new Player(client, dB.GetUserDataFromSession(request1.Token), p1Deck), new Player(client2, dB.GetUserDataFromSession(request2.Token), p2Deck) });
-
-                    responseData = $"Success: Have a good day";
-
+                    responseData = $"Success:{b.BeginnTheBattle()}";
                 }
-
-                /*
-                
-                */
 
                 Response response = new Response(responseData);
                 string res = response.ResConstruct + JsonConvert.SerializeObject(response);
 
                 responseBytes = Encoding.UTF8.GetBytes(res);
                 networkStream.Write(responseBytes, 0, responseBytes.Length);
+
+                if (request1.Route == "POST /battles HTTP/1.1")
+                {
+                    networkStream2.Write(responseBytes, 0, responseBytes.Length);
+                }
             }
         }
     }

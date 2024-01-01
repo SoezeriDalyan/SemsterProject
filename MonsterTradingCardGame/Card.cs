@@ -12,10 +12,11 @@ namespace MonsterTradingCardGame
         public string Name { get; set; }
         [JsonPropertyName("Damage")]
         public double Damage { get; private set; }
-
+        [Newtonsoft.Json.JsonIgnore]
         public Attribut Attribute { get; private set; }
-
+        [Newtonsoft.Json.JsonIgnore]
         public Type Type { get; private set; }
+        [Newtonsoft.Json.JsonIgnore]
         public double TempDamage { get; private set; }
 
         public Card(string iD, string name, double damage)

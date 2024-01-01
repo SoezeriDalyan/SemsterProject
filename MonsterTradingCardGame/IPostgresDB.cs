@@ -1,4 +1,5 @@
-﻿using Npgsql;
+﻿using Newtonsoft.Json;
+using Npgsql;
 
 namespace MonsterTradingCardGame
 {
@@ -20,8 +21,7 @@ namespace MonsterTradingCardGame
 
     internal class DB : IPostgresDB
     {
-        //Todo: Timer that deletes old sessions or updates
-        //Check money Later in buy packs
+        //Todo: Timer that deletes old sessions or updates (unique feature maybe ???)
 
         private string connectionString = "Host=localhost;Port=5432;Username=postgres;Password=password;Database=postgres";
 
@@ -171,7 +171,8 @@ namespace MonsterTradingCardGame
                         {
                             command.ExecuteNonQuery();
                             Console.WriteLine($"Created Session for User: {user.Username}");
-                            return $"Success: {user.Username} logged in: {user.Username}-mtcgToken";
+                            string tokenString = "{\"AccessToken\".\"" + user.Username + "-mtcgToken\"}";
+                            return $"Success:{user.Username} logged in:{tokenString}";
                         }
                         catch (Exception ex)
                         {
@@ -424,7 +425,6 @@ namespace MonsterTradingCardGame
                 {
                     using (NpgsqlDataReader reader = command.ExecuteReader())
                     {
-                        //Check if i get Rows back => means that there is an active Session
                         if (reader.HasRows == true)
                         {
 
@@ -461,7 +461,8 @@ namespace MonsterTradingCardGame
         /// <returns>All Cards with all stats</returns>
         public string GetAllCards(string token)
         {
-            string username = String.Empty, allCardsReturn = String.Empty;
+            string username = String.Empty;
+            List<Card> allCardsReturn = new List<Card>();
             Card? c = null;
             using (var connection = new NpgsqlConnection(connectionString))
             {
@@ -477,16 +478,12 @@ namespace MonsterTradingCardGame
 
                     using (NpgsqlDataReader reader = command.ExecuteReader())
                     {
-                        //Check if i get Rows back => means that there is an active Session
                         if (reader.HasRows == true)
                         {
                             while (reader.Read())
                             {
                                 username = reader.GetString(reader.GetOrdinal("username"));
-
-                                c = new Card(reader.GetString(reader.GetOrdinal("cardid")), reader.GetString(reader.GetOrdinal("cardname")), reader.GetInt32(reader.GetOrdinal("damage")));
-                                //Todo Json.tojson
-                                allCardsReturn += c.ToString() + "\n";
+                                allCardsReturn.Add(new Card(reader.GetString(reader.GetOrdinal("cardid")), reader.GetString(reader.GetOrdinal("cardname")), reader.GetInt32(reader.GetOrdinal("damage"))));
                             }
                         }
                     }
@@ -495,7 +492,7 @@ namespace MonsterTradingCardGame
                 connection.Close();
             }
 
-            return $"Success: Here Are Your Cards: {allCardsReturn}";
+            return $"Success: Here Are Your Cards:{JsonConvert.SerializeObject(allCardsReturn).Replace(":", ".")}";
         }
 
         /// <summary>
@@ -567,7 +564,6 @@ namespace MonsterTradingCardGame
 
                     using (NpgsqlDataReader reader = command.ExecuteReader())
                     {
-                        //Check if i get Rows back => means that there is an active Session
                         if (reader.HasRows == true)
                         {
                             while (reader.Read())
@@ -594,6 +590,7 @@ namespace MonsterTradingCardGame
         {
             string usernameInSession = String.Empty, Image = String.Empty, Bio = String.Empty;
             int VirtualCoins = 0;
+            User? user = null;
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
@@ -610,15 +607,14 @@ namespace MonsterTradingCardGame
 
                         using (NpgsqlDataReader reader = command.ExecuteReader())
                         {
-                            //Check if i get Rows back => means that there is an active Session
                             if (reader.HasRows == true)
                             {
                                 while (reader.Read())
                                 {
                                     Image = reader.GetString(reader.GetOrdinal("image"));
                                     Bio = reader.GetString(reader.GetOrdinal("bio"));
-                                    //Name????? Fragen Todo
                                     VirtualCoins = reader.GetInt32(reader.GetOrdinal("virtualcoins"));
+                                    user = new User(username, VirtualCoins, Bio, Image);
                                 }
                             }
                         }
@@ -631,7 +627,7 @@ namespace MonsterTradingCardGame
                 connection.Close();
             }
 
-            return $"Success: Data provided: Username {username}, VirtualCoins {VirtualCoins}, Image {Image}, Bio {Bio.Replace(" ", "_")}";
+            return $"Success: Data provided:{JsonConvert.SerializeObject(user).Replace(":", ".")}";
         }
 
         public string UpdateUserData(string username, string token, string image, string bio)
@@ -685,7 +681,6 @@ namespace MonsterTradingCardGame
 
                         using (NpgsqlDataReader reader = command.ExecuteReader())
                         {
-                            //Check if i get Rows back => means that there is an active Session
                             if (reader.HasRows == true)
                             {
                                 while (reader.Read())
@@ -718,7 +713,6 @@ namespace MonsterTradingCardGame
 
                     using (NpgsqlDataReader reader = command.ExecuteReader())
                     {
-                        //Check if i get Rows back => means that there is an active Session
                         if (reader.HasRows == true)
                         {
                             while (reader.Read())
@@ -746,7 +740,6 @@ namespace MonsterTradingCardGame
 
                 using (NpgsqlDataReader reader = command.ExecuteReader())
                 {
-                    //Check if i get Rows back => means that there is an active Session
                     if (reader.HasRows == true)
                     {
                         while (reader.Read())
@@ -763,6 +756,111 @@ namespace MonsterTradingCardGame
             }
 
             return false;
+        }
+
+        public int GetStats(string token)
+        {
+            int eloValue = 0;
+            string usernameInSession = String.Empty;
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                usernameInSession = GetUserDataFromSession(token);
+
+                string query = "select * from Users where username = @Username";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("Username", usernameInSession);
+
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows == true)
+                        {
+                            while (reader.Read())
+                            {
+                                eloValue = reader.GetInt32(reader.GetOrdinal("elo"));
+                            }
+                        }
+                    }
+                }
+
+                connection.Close();
+            }
+            return eloValue;
+        }
+
+        public List<ScoreBoard> GetScoreBoard(string token)
+        {
+            int eloValue = 0;
+            string username = String.Empty;
+            string usernameInSession = String.Empty;
+            int place = 1;
+
+            List<ScoreBoard> scoreBoard = new List<ScoreBoard>();
+
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                usernameInSession = GetUserDataFromSession(token);
+
+                string query = "select * from Users order by elo desc";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows == true)
+                        {
+                            while (reader.Read())
+                            {
+                                eloValue = reader.GetInt32(reader.GetOrdinal("elo"));
+                                username = reader.GetString(reader.GetOrdinal("username"));
+
+                                if (username != "admin")
+                                {
+                                    scoreBoard.Add(new ScoreBoard(place, username, eloValue));
+                                    place++;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                connection.Close();
+            }
+            return scoreBoard;
+        }
+
+        public void UpdateElo(Player winner, Player looser)
+        {
+            int eloValue = 3;
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "UPDATE Users SET elo = elo - @Elo where username = @Username";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("Elo", eloValue);
+                    command.Parameters.AddWithValue("Username", winner.Name);
+                    command.ExecuteNonQuery();
+                }
+
+                eloValue = -5;
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("Elo", eloValue);
+                    command.Parameters.AddWithValue("Username", looser.Name);
+                    command.ExecuteNonQuery();
+                }
+
+                connection.Close();
+            }
         }
     }
 }

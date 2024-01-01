@@ -49,6 +49,11 @@ namespace MonsterTradingCardGame
                 {
                     Data = strings[2].Split("\n").ToArray<string>();
                 }
+
+                if (strings[2].Contains("."))
+                {
+                    Data = strings[2].Replace(".", ":");
+                }
             }
 
             ResConstruct = $"HTTP/1.1 {StatusCode} {MappedStatus}\r\nContent-Type: text/application/json\r\n\r\n";
