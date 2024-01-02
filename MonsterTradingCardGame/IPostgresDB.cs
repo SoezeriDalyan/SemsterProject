@@ -17,6 +17,19 @@ namespace MonsterTradingCardGame
         public string GetPackUUID();
         public string GetAllCards(string token);
         public string GetDeck(string token);
+        public string GetUserData(string username, string token);
+        public string UpdateUserData(string username, string token, string image, string bio);
+        public List<Card> GetCards(List<string> cardIDs, string token);
+        public string GetUserDataFromSession(string token);
+        public bool CheckIfUserHasEounghMoney(string username, NpgsqlConnection connection);
+        public int GetStats(string token);
+        public List<ScoreBoard> GetScoreBoard(string token);
+        public void UpdateElo(Player winner, Player looser);
+        public string GetTradingDeals(string token);
+        public string PostTradingDeals(string token, Trading trading);
+        public string DeleteTradingDeals(string token, string tradingId);
+        public string TradeDeal(string token, string tradingId, string cardForTrade);
+        public void TransferCard(string username, string cardid, NpgsqlConnection connection);
     }
 
     internal class DB : IPostgresDB
