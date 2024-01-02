@@ -41,19 +41,7 @@ Battles involve rounds where cards are randomly chosen from decks. Each round co
 
 ## Trading Deals
 
-Users can initiate trading deals by offering a card in the store with specific requirements for the desired card in return.
-
-## Optional Features
-
-- Trading system: Trade cards vs coins.
-- Additional card classes (e.g., trap cards, passive spells).
-- Further element types (e.g., ice, wind).
-- Friends List: Play against friends and manage friends by username.
-- Card descriptions.
-- Extended Scoreboard with ELO or WHR.
-- Ability to add virtual coins with stats on spent coins.
-- Transaction history.
-- Win/lose ratio in user stats.
+Users can initiate trading deals by offering a card in the store with specific requirements for the desired card in return
 
 ## How to Run
 
