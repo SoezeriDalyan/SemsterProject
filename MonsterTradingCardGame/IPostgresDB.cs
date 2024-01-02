@@ -21,9 +21,32 @@ namespace MonsterTradingCardGame
 
     internal class DB : IPostgresDB
     {
-        //Todo: Timer that deletes old sessions or updates (unique feature maybe ???)
-
         private string connectionString = "Host=localhost;Port=5432;Username=postgres;Password=password;Database=postgres";
+
+        public void deleteDB()
+        {
+            Console.WriteLine("Deleting DB");
+            using (var connection = new NpgsqlConnection(connectionString))//set connection
+            {
+                connection.Open();//open Connection
+                var query = """
+                    drop table if exists deck;
+                    drop table if exists Card;
+                    drop table if exists Packs;
+                    drop table if exists usersession;
+                    drop table if exists users;
+                    """;
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Close the connection
+                connection.Close();
+            }
+            Console.WriteLine("Done with the Tables");
+        }
 
         /// <summary>
         /// Create tables if they don't exist
@@ -34,12 +57,6 @@ namespace MonsterTradingCardGame
             {
                 connection.Open();//open Connection
                 var query = """
-                    --drop table if exists deck;
-                    --drop table if exists Card;
-                    --drop table if exists Packs;
-                    --drop table if exists usersession;
-                    --drop table if exists users;
-
                     CREATE TABLE IF NOT EXISTS Users(
                         Username VARCHAR unique Primary Key,
                         Password VARCHAR,
@@ -81,6 +98,17 @@ namespace MonsterTradingCardGame
                     	FOREIGN KEY (CardID) REFERENCES Card(CardID),
                         FOREIGN KEY (Username) REFERENCES Users(Username),
                     	PRIMARY KEY (CardID, Username)
+                    );
+
+                    CREATE TABLE IF NOT EXISTS Trading
+                    (
+                        ID VARCHAR PRIMARY KEY,
+                    	Trader VARCHAR,
+                        CardToTrade VARCHAR,
+                        Type VARCHAR,
+                        MinimumDamage DECIMAL,
+                    	FOREIGN KEY (CardToTrade) REFERENCES Card(CardID),
+                    	FOREIGN KEY (Trader) REFERENCES Users(Username)
                     );
                     """;
 
@@ -860,6 +888,184 @@ namespace MonsterTradingCardGame
                 }
 
                 connection.Close();
+            }
+        }
+
+        public string GetTradingDeals(string token)
+        {
+            string username;
+            List<Trading> currentTraiding = new List<Trading>();
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                //missing link to user
+                string query = "Select * from Trading";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows == true)
+                        {
+                            while (reader.Read())
+                            {
+                                //Todo, => darf man seine eigenen Trading deals sehen? => eig schon, weil im Curl file gibt es einen versuch auf sich selbst zu traden geht ja nur wenn man den deal sieht
+                                Trading trading = new Trading(reader.GetString(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("cardtotrade")), reader.GetString(reader.GetOrdinal("type")), reader.GetDouble(reader.GetOrdinal("minimumdamage")), reader.GetString(reader.GetOrdinal("trader")));
+                                currentTraiding.Add(trading);
+                            }
+                        }
+                    }
+                }
+
+                connection.Close();
+            }
+
+            return $"Success:All trading deals:{JsonConvert.SerializeObject(currentTraiding).Replace(":", ".")}";
+        }
+
+        public string PostTradingDeals(string token, Trading trading)
+        {
+            string usernameInSession = GetUserDataFromSession(token);
+
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "INSERT INTO Trading (ID, CardToTrade, Type, MinimumDamage, Trader) VALUES (@Id, @CardtoTrade, @Type, @MinimumDamage, @Trader)";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("Id", trading.ID);
+                    command.Parameters.AddWithValue("CardtoTrade", trading.CardToTrade);
+                    command.Parameters.AddWithValue("Type", trading.Type.ToString());
+                    command.Parameters.AddWithValue("MinimumDamage", trading.MinimumDamage);
+                    command.Parameters.AddWithValue("Trader", usernameInSession);
+                    command.ExecuteNonQuery();
+                }
+
+                connection.Close();
+            }
+
+            return $"Success:Posted trading deal";
+        }
+
+        public string DeleteTradingDeals(string token, string tradingId)
+        {
+            string usernameInSession = GetUserDataFromSession(token);
+            Trading? trading = null;
+
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "Select * from Trading where id = @Id";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("Id", tradingId);
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows == true)
+                        {
+                            while (reader.Read())
+                            {
+                                trading = new Trading(reader.GetString(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("cardtotrade")), reader.GetString(reader.GetOrdinal("type")), reader.GetDouble(reader.GetOrdinal("minimumdamage")), reader.GetString(reader.GetOrdinal("trader")));
+                            }
+                        }
+                    }
+                }
+
+                if (trading.Trader == usernameInSession)
+                {
+                    query = "DELETE FROM Trading WHERE id = @Id";
+
+                    using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("Id", tradingId);
+                        command.ExecuteNonQuery();
+                    }
+                }
+                else
+                {
+                    return $"Error:Unauthorized";
+                }
+
+                connection.Close();
+            }
+            string idString = "{\"ID\".\"" + tradingId + "\"}";
+            return $"Success:Deleted Trading deal:{idString}";
+        }
+
+        public string TradeDeal(string token, string tradingId, string cardForTrade)
+        {
+            string usernameInSession = GetUserDataFromSession(token);
+            Trading? trading = null;
+
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "Select * from Trading where id = @Id";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("Id", tradingId);
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows == true)
+                        {
+                            while (reader.Read())
+                            {
+                                trading = new Trading(reader.GetString(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("cardtotrade")), reader.GetString(reader.GetOrdinal("type")), reader.GetDouble(reader.GetOrdinal("minimumdamage")), reader.GetString(reader.GetOrdinal("trader")));
+                            }
+                        }
+                    }
+                }
+
+                if (trading.Trader != usernameInSession)
+                {
+                    Card card = GetCards(new List<string> { cardForTrade }, token)[0];
+                    if (card.Damage >= trading.MinimumDamage)
+                    {
+                        //CardToTrader
+                        TransferCard(usernameInSession, trading.CardToTrade, connection);
+
+                        //CardfromTrader
+                        TransferCard(trading.Trader, cardForTrade, connection);
+
+                        query = "DELETE FROM Trading WHERE id = @Id";
+
+                        using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("Id", tradingId);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                    else
+                    {
+                        return $"Error:Damage to low";
+                    }
+                }
+                else
+                {
+                    return $"Error:Cant Trade with yourself";
+                }
+
+                connection.Close();
+            }
+
+            return $"Success:Deal went successfuly";
+        }
+
+        public void TransferCard(string username, string cardid, NpgsqlConnection connection)
+        {
+            string query = "UPDATE Card SET username = @Username where cardid = @Cardid";
+
+            using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("Username", username);
+                command.Parameters.AddWithValue("Cardid", cardid);
+                command.ExecuteNonQuery();
             }
         }
     }

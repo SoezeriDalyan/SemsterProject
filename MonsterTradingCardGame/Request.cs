@@ -81,7 +81,7 @@ namespace MonsterTradingCardGame
         {
             // Assuming the format is "/users/{username}"
             string[] segments = RequestFromUser.Split('/');
-            if (segments.Length >= 3 && segments[1] == "users")
+            if (segments.Length >= 3 && segments[1] == "users" || segments[1] == "tradings")
             {
                 return segments[2].Split(" ")[0];
             }

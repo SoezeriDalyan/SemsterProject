@@ -11,6 +11,11 @@ class Program
 
     static async Task Main()
     {
+        bool restartAll = false;
+        if (restartAll)
+        {
+            dB.deleteDB();
+        }
         Console.WriteLine("Createing Tables in the Postgres database if needed");
         //Initilaize DB
         dB.InitilizeDB();
@@ -103,6 +108,23 @@ class Program
                 else if (request1.Route == "GET /scoreboard HTTP/1.1")
                 {
                     responseData = $"Success:Current Scoreboard:{JsonConvert.SerializeObject(dB.GetScoreBoard(request1.Token)).Replace(":", ".")}";
+                }
+
+                else if (request1.Route == "GET /tradings HTTP/1.1")
+                {
+                    responseData = GetTradingList(request1.Token);
+                }
+                else if (request1.Route == "POST /tradings HTTP/1.1")
+                {
+                    responseData = $"Success:Posted tradings:{PostTrading(request1.Token, request1.Body)}";
+                }
+                else if (request1.Route.StartsWith("DELETE /tradings"))
+                {
+                    responseData = DeleteTrading(request1.Token, request1.UsernameInRoute);
+                }
+                else if (request1.Route.StartsWith("POST /tradings"))
+                {
+                    responseData = TradeDeal(request1.Token, request1.UsernameInRoute, request1.Body);
                 }
 
                 else if (request1.Route == "POST /battles HTTP/1.1")
@@ -224,6 +246,26 @@ class Program
     {
         User? user = JsonConvert.DeserializeObject<User>(body);
         return dB.UpdateUserData(username, headertoken, user.Image, user.Bio);
+    }
+
+    static string GetTradingList(string headertoken)
+    {
+        return dB.GetTradingDeals(headertoken);
+    }
+    static string PostTrading(string headertoken, string body)
+    {
+        var trade = JsonConvert.DeserializeObject<Trading>(body);
+        return dB.PostTradingDeals(headertoken, trade);
+    }
+    static string DeleteTrading(string headertoken, string traidingId)
+    {
+        return dB.DeleteTradingDeals(headertoken, traidingId);
+    }
+
+    static string TradeDeal(string headertoken, string traidingId, string body)
+    {
+        string? deserializedBody = JsonConvert.DeserializeObject<string>(body);
+        return dB.TradeDeal(headertoken, traidingId, deserializedBody);
     }
 
     static List<string> MapDeckList(List<string> cards)
