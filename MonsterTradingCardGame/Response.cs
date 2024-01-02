@@ -21,8 +21,10 @@ namespace MonsterTradingCardGame
         {
             string[] strings = input.Split(":");
 
+            //No need to check
             Message = strings[1];
 
+            //adjusts the status code of the message
             Status = strings[0];
             if (Status == "Success")
             {
@@ -40,7 +42,7 @@ namespace MonsterTradingCardGame
                 MappedStatus = "Unauthorized";
             }
 
-
+            //checked whether there is data that is sent to the client.
             if (strings.Length == 3 && strings[2] != null)
             {
                 Data = strings[2];
@@ -56,6 +58,7 @@ namespace MonsterTradingCardGame
                 }
             }
 
+            //the construct which promises a correct output to clients
             ResConstruct = $"HTTP/1.1 {StatusCode} {MappedStatus}\r\nContent-Type: text/application/json\r\n\r\n";
         }
     }

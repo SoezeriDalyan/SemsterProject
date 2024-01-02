@@ -17,74 +17,86 @@ namespace MonsterTradingCardGame
             Players = players;
         }
 
-
+        /// <summary>
+        /// Handles the Battle funktionalität and orchestrate all methods and parameters.
+        /// </summary>
+        /// <returns>yet to be transformed response Message</returns>
         public string BeginnTheBattle()
         {
             Player p1 = Players[0];
             Player p2 = Players[1];
             Card roundWinner = null;
+            string roundWinnerName = String.Empty;
+            //Seperator is there for a nice output on the console
             string seperator = "\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////";
 
+            //Signal start to players
             SendToBoth("Let the battle beginn");
 
             int rounds = 1;
-            while (rounds < 100)
+            while (rounds < 100) //max 100 rounds otherwise draw
             {
+                //get a random Card from Deck
                 c1 = p1.Deck[rnd.Next(p1.Deck.Count)];
                 c2 = p2.Deck[rnd.Next(p2.Deck.Count)];
 
+                //the fight between the chosen cards
                 string fight = $"{seperator}\nRound: {rounds}\n({p1.Name}): {c1.BattleString()} fights against ({p2.Name}): {c2.BattleString()}";
 
                 Console.WriteLine(fight);
                 SendToBoth(fight);
 
+                //checks the outcome of the fight
                 roundWinner = CheckRoundWinner(p1.Name, p2.Name);
 
+                //null = no winner in round
                 if (roundWinner != null)
                 {
-                    //check if roundwinner = c1 oder c2 dann add looser to other player and change the name in the card
+                    //check if roundwinner = c1 or c2
+                    //Then add looser card to winner player
                     if (roundWinner == c1)
                     {
                         p2.Deck.Remove(c2);
                         p1.Deck.Add(c2);
-
-                        Console.WriteLine($"Winner in Round {rounds}: " + p1.Name);
-                        SendToBoth($"\n\nWinner in Round {rounds}: " + p1.Name + seperator + "\n");
+                        roundWinnerName = p1.Name;
                     }
                     else
                     {
                         p1.Deck.Remove(c1);
                         p2.Deck.Add(c1);
-
-                        Console.WriteLine($"Winner in Round {rounds}: " + p2.Name);
-                        SendToBoth($"\n\nWinner in Round {rounds}: " + p2.Name + seperator + "\n");
+                        roundWinnerName = p2.Name;
                     }
+
+                    //Sends outcome to players
+                    Console.WriteLine($"Winner in Round {rounds}: " + roundWinnerName);
+                    SendToBoth($"\n\nWinner in Round {rounds}: " + roundWinnerName + seperator + "\n");
 
                     Console.WriteLine(p1.Deck.Count);
                     Console.WriteLine(p2.Deck.Count);
 
+                    //Shows how many cards each player has left
                     SendToBoth($"\n\n{p1.Name} has {p1.Deck.Count} cards \n{p2.Name} has {p2.Deck.Count} cards\n\n");
                 }
                 else
                 {
+                    //Sends outcome to players
                     SendToBoth($"\n\nWinner in Round {rounds}: none{seperator}" + "\n");
                     Console.WriteLine($"Winner in Round {rounds}: none");
                 }
 
-                //Check if Decks are not 0 for each player
-
+                //Check if Decks are not 0 for each player => ergo checks who the looser is
                 if (p1.Deck.Count == 0)
                 {
                     Console.WriteLine("Winner = Player2: " + p2.Name);
-                    UpdateElo(p2, p1);
-                    return $"Winner = {p2.Name}";
+                    UpdateElo(p2, p1); //update Elo
+                    return $"Winner = {p2.Name}"; //returns outcome
                 }
 
                 if (p2.Deck.Count == 0)
                 {
                     Console.WriteLine("Winner = Player1: " + p1.Name);
-                    UpdateElo(p1, p2);
-                    return $"Winner = {p1.Name}";
+                    UpdateElo(p1, p2); //update Elo
+                    return $"Winner = {p1.Name}"; //returns outcome
                 }
 
                 Thread.Sleep(500);
@@ -94,7 +106,7 @@ namespace MonsterTradingCardGame
 
             if (rounds == 100)
             {
-                //SendtoBoth and Calculate ELO
+                //no need for Elo => draw nothing happens
                 Console.WriteLine("Oh no, its a Draw");
                 SendToBoth("\nOh no, its a Draw\n");
             }
@@ -102,6 +114,13 @@ namespace MonsterTradingCardGame
             return "Its a draw";
         }
 
+        /// <summary>
+        /// Updates Elo for winner and looser
+        /// +3 Winner
+        /// -5 Looser
+        /// </summary>
+        /// <param name="winner"></param>
+        /// <param name="looser"></param>
         public void UpdateElo(Player winner, Player looser)
         {
             DatabaseConnection.UpdateElo(winner, looser);
@@ -139,6 +158,10 @@ namespace MonsterTradingCardGame
             return null;
         }
 
+        /// <summary>
+        /// Goes through every possibility for effects that can happen between two cards.
+        /// </summary>
+        /// <returns>nothing, but effect the card depending on output</returns>
         public void Effectivnes()
         {
             if (CheckEffectivnes(c1, c2))
@@ -163,6 +186,12 @@ namespace MonsterTradingCardGame
             }
         }
 
+        /// <summary>
+        /// Checks the effects that can occure
+        /// </summary>
+        /// <param name="c1"></param>
+        /// <param name="c2"></param>
+        /// <returns>bool => true || false</returns>
         public bool CheckEffectivnes(Card c1, Card c2)
         {
             if (c1.Attribute == Attribut.Water && c2.Attribute == Attribut.Fire)
@@ -183,9 +212,13 @@ namespace MonsterTradingCardGame
             return false;
         }
 
+
+        /// <summary>
+        /// Goes through every possibility for special Cases that can happen between two cards.
+        /// </summary>
+        /// <returns>The winner Card</returns>
         public Card SpecialCase()
         {
-
             if (CheckSpecialCase(c1, c2))
             {
                 Console.WriteLine("Card 1 to Card 2" + CheckSpecialCase(c1, c2));
@@ -204,6 +237,12 @@ namespace MonsterTradingCardGame
             return null;
         }
 
+        /// <summary>
+        /// Checks the special Cases
+        /// </summary>
+        /// <param name="c1"></param>
+        /// <param name="c2"></param>
+        /// <returns>bool => true || false</returns>
         public bool CheckSpecialCase(Card c1, Card c2)
         {
             if (c1.Name == "Dragon" && c2.Name.Contains("Goblin"))
@@ -220,12 +259,21 @@ namespace MonsterTradingCardGame
             return false;
         }
 
+        /// <summary>
+        /// Calls the sender Methode for each palyer to send to both and write less code
+        /// </summary>
+        /// <param name="message"></param>
         private void SendToBoth(string message)
         {
             SendMessages(Players[0].TcpClient, message);
             SendMessages(Players[1].TcpClient, message);
         }
 
+        /// <summary>
+        /// Send Data to client
+        /// </summary>
+        /// <param name="tcpClient"></param>
+        /// <param name="message"></param>
         private void SendMessages(TcpClient tcpClient, string message)
         {
             var networkStream = tcpClient.GetStream();

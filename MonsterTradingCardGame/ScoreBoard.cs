@@ -4,7 +4,7 @@ namespace MonsterTradingCardGame
 {
     internal class ScoreBoard
     {
-        //Helps to serialize
+        //Helps to serialize Data for output 
         [JsonPropertyName("Place")]
         public int Place { get; private set; }
         [JsonPropertyName("Name")]

@@ -51,7 +51,6 @@ namespace MonsterTradingCardGame
 
         public string BattleString()
         {
-
             return $"Name({Name}) Damage({Damage}) TempDamage({TempDamage})";
         }
     }

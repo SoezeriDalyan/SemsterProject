@@ -4,6 +4,8 @@ namespace MonsterTradingCardGame
 {
     internal class Player
     {
+        //This class handles all necessary data of a player during a battle.
+        //The TypeClient is intended as support for sending the data
         public string Name { get; set; }
         public TcpClient TcpClient { get; set; }
         public List<Card> Deck { get; private set; }

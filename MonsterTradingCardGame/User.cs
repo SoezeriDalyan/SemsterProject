@@ -14,8 +14,7 @@ namespace MonsterTradingCardGame
         [JsonPropertyName("Bio")]
         public string Bio { get; private set; }
 
-        //Name soll username erstezten ????? Todo, Fragen
-        [Newtonsoft.Json.JsonConstructor]
+        [Newtonsoft.Json.JsonConstructor] //Ensures that this constructor is selected when de/serializing.
         public User(string username, string password, string? bio, string? image)
         {
             Username = username;
@@ -24,6 +23,9 @@ namespace MonsterTradingCardGame
             Bio = bio;
             Image = image;
         }
+
+        //This structure is important when importing from the database again in order to change the data.
+        //The difference here is that the coins are read in and must be checked before you can buy packs.
         public User(string username, int virutalcoins, string bio, string image)
         {
             Username = username;

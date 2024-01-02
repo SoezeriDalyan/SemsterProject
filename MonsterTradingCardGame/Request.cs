@@ -4,6 +4,7 @@ namespace MonsterTradingCardGame
 {
     internal class Request
     {
+        //This class deals with every request that is received.
         public string RequestFromUser { get; private set; }
         public string Route { get; private set; }
         public string Token { get; private set; }

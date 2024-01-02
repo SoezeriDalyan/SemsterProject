@@ -16,7 +16,7 @@ namespace MonsterTradingCardGame
         [JsonPropertyName("Trader")]
         public string Trader { get; set; }
 
-        [Newtonsoft.Json.JsonConstructor]
+        [Newtonsoft.Json.JsonConstructor]//Ensures that this constructor is selected when de/serializing.
         public Trading(string iD, string cardToTrade, string type, double minimumDamage)
         {
             ID = iD;

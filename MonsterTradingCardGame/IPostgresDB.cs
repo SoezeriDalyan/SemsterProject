@@ -23,6 +23,9 @@ namespace MonsterTradingCardGame
     {
         private string connectionString = "Host=localhost;Port=5432;Username=postgres;Password=password;Database=postgres";
 
+        /// <summary>
+        /// Drops all DBs for a restart
+        /// </summary>
         public void deleteDB()
         {
             Console.WriteLine("Deleting DB");
@@ -574,6 +577,11 @@ namespace MonsterTradingCardGame
             return "Success: Deck is set";
         }
 
+        /// <summary>
+        /// Get the Deck
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns>List(string) of cards (=deck) in this format {card.ID}, {card.Name}, {card.Damage}</returns>
         public string GetDeck(string token)
         {
             List<string> cards = new List<string>();
@@ -614,6 +622,12 @@ namespace MonsterTradingCardGame
             return allCardsReturn;
         }
 
+        /// <summary>
+        /// User gets his Data
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="token"></param>
+        /// <returns>resposne string of user data</returns>
         public string GetUserData(string username, string token)
         {
             string usernameInSession = String.Empty, Image = String.Empty, Bio = String.Empty;
@@ -654,10 +668,18 @@ namespace MonsterTradingCardGame
                 }
                 connection.Close();
             }
-
+            //There we use the user JsonConstrucute contructure
             return $"Success: Data provided:{JsonConvert.SerializeObject(user).Replace(":", ".")}";
         }
 
+        /// <summary>
+        /// Update user data
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="token"></param>
+        /// <param name="image"></param>
+        /// <param name="bio"></param>
+        /// <returns> res</returns>
         public string UpdateUserData(string username, string token, string image, string bio)
         {
             string usernameInSession = String.Empty, Image = String.Empty, Bio = String.Empty;
@@ -690,7 +712,12 @@ namespace MonsterTradingCardGame
             return $"Success: User updated";
         }
 
-
+        /// <summary>
+        /// Gets/mapps all cards based on the id's
+        /// </summary>
+        /// <param name="cardIDs"></param>
+        /// <param name="token"></param>
+        /// <returns>All cards in Card class format</returns>
         public List<Card> GetCards(List<string> cardIDs, string token)
         {
             List<Card> cards = new List<Card>();
@@ -726,6 +753,11 @@ namespace MonsterTradingCardGame
             return cards;
         }
 
+        /// <summary>
+        /// Returns the username from the session: used to verify authorization of user in other Methods
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns>username</returns>
         public string GetUserDataFromSession(string token)
         {
             string username = String.Empty;
@@ -757,6 +789,12 @@ namespace MonsterTradingCardGame
             return username;
         }
 
+        /// <summary>
+        /// Checks if the user has enough money to buy a pack
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="connection"></param>
+        /// <returns>bool ture = enough money false not enough money</returns>
         public bool CheckIfUserHasEounghMoney(string username, NpgsqlConnection connection)
         {
             int vc = 0;
@@ -786,6 +824,11 @@ namespace MonsterTradingCardGame
             return false;
         }
 
+        /// <summary>
+        /// User gets his stats => elo value
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns>elo value</returns>
         public int GetStats(string token)
         {
             int eloValue = 0;
@@ -819,6 +862,11 @@ namespace MonsterTradingCardGame
             return eloValue;
         }
 
+        /// <summary>
+        /// All player in elo order (1 = highes elo)
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns>List Scoarbord variable</returns>
         public List<ScoreBoard> GetScoreBoard(string token)
         {
             int eloValue = 0;
@@ -862,6 +910,13 @@ namespace MonsterTradingCardGame
             return scoreBoard;
         }
 
+        /// <summary>
+        /// Update the Elo value in DB
+        /// +3 = winner
+        /// -5 = looser
+        /// </summary>
+        /// <param name="winner"></param>
+        /// <param name="looser"></param>
         public void UpdateElo(Player winner, Player looser)
         {
             int eloValue = 3;
@@ -891,6 +946,11 @@ namespace MonsterTradingCardGame
             }
         }
 
+        /// <summary>
+        /// Get all active trading deals in DB
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns>res with all deals</returns>
         public string GetTradingDeals(string token)
         {
             string username;
@@ -923,6 +983,12 @@ namespace MonsterTradingCardGame
             return $"Success:All trading deals:{JsonConvert.SerializeObject(currentTraiding).Replace(":", ".")}";
         }
 
+        /// <summary>
+        /// Creates a trading deal in DB
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="trading"></param>
+        /// <returns>res string</returns>
         public string PostTradingDeals(string token, Trading trading)
         {
             string usernameInSession = GetUserDataFromSession(token);
@@ -949,6 +1015,12 @@ namespace MonsterTradingCardGame
             return $"Success:Posted trading deal";
         }
 
+        /// <summary>
+        /// deletes a trading deal
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="tradingId"></param>
+        /// <returns>res with deleted trading deal id</returns>
         public string DeleteTradingDeals(string token, string tradingId)
         {
             string usernameInSession = GetUserDataFromSession(token);
@@ -996,6 +1068,13 @@ namespace MonsterTradingCardGame
             return $"Success:Deleted Trading deal:{idString}";
         }
 
+        /// <summary>
+        /// Trade Cards for real
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="tradingId"></param>
+        /// <param name="cardForTrade"></param>
+        /// <returns>res</returns>
         public string TradeDeal(string token, string tradingId, string cardForTrade)
         {
             string usernameInSession = GetUserDataFromSession(token);
@@ -1057,6 +1136,12 @@ namespace MonsterTradingCardGame
             return $"Success:Deal went successfuly";
         }
 
+        /// <summary>
+        /// Updates the cards and changes the username => ergo the owner
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="cardid"></param>
+        /// <param name="connection"></param>
         public void TransferCard(string username, string cardid, NpgsqlConnection connection)
         {
             string query = "UPDATE Card SET username = @Username where cardid = @Cardid";
