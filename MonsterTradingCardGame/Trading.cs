@@ -2,7 +2,7 @@
 
 namespace MonsterTradingCardGame
 {
-    internal class Trading
+    public class Trading
     {
         [JsonPropertyName("ID")]
         public string ID { get; private set; }

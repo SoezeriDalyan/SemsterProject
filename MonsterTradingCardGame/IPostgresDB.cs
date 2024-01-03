@@ -32,7 +32,7 @@ namespace MonsterTradingCardGame
         public void TransferCard(string username, string cardid, NpgsqlConnection connection);
     }
 
-    internal class DB : IPostgresDB
+    public class DB : IPostgresDB
     {
         private string connectionString = "Host=localhost;Port=5432;Username=postgres;Password=password;Database=postgres";
 
@@ -140,7 +140,52 @@ namespace MonsterTradingCardGame
         }
 
         /// <summary>
-        /// Add a User, no check needed no check needed if existing, because when trying to insert the same username twice, it will crash => 23505
+        /// Deleting the things that the Test created
+        /// </summary>
+        public void DeleteTestingData(string username, string packid)
+        {
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "delete from card where damage = @Damage";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("damage", 999);
+                    command.ExecuteNonQuery();
+                }
+
+                query = "delete from packs where packid = @PackId";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("PackId", packid);
+                    command.ExecuteNonQuery();
+                }
+
+                query = "delete from usersession where username = @Username";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("Username", username);
+                    command.ExecuteNonQuery();
+                }
+
+                query = "delete from users where username = @Username";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("Username", username);
+                    command.ExecuteNonQuery();
+                }
+
+                connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// Add a User, no check needed if existing, because when trying to insert the same username twice, it will crash => 23505
         /// But the crash is intentional, which is why I don't always have to check first whether the username already exists.
         /// </summary>
         /// <param name="user"> This is an object of the Class User</param>
@@ -273,7 +318,8 @@ namespace MonsterTradingCardGame
                 connection.Close();
             }
             Console.WriteLine($"Created Pack: {packUUID}");
-            return "Success: Pack created";
+            string packidInDb = "{\"PackId\".\"" + packUUID + "\"}";
+            return $"Success: Pack created:{packidInDb}";
         }
 
         /// <summary>

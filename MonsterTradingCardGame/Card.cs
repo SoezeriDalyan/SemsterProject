@@ -4,7 +4,7 @@ namespace MonsterTradingCardGame
 {
     public enum Attribut { Fire, Water, Normal };
     public enum Type { Monster, Spell };
-    internal class Card
+    public class Card
     {
         [JsonPropertyName("Id")]
         public string ID { get; private set; }

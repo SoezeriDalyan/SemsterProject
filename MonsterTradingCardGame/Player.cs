@@ -2,7 +2,7 @@
 
 namespace MonsterTradingCardGame
 {
-    internal class Player
+    public class Player
     {
         //This class handles all necessary data of a player during a battle.
         //The TypeClient is intended as support for sending the data

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace MonsterTradingCardGame
 {
-    internal class Battle
+    public class Battle
     {
         public DB DatabaseConnection { get; private set; }
         public List<Player> Players { get; private set; }
@@ -123,7 +123,10 @@ namespace MonsterTradingCardGame
         /// <param name="looser"></param>
         public void UpdateElo(Player winner, Player looser)
         {
-            DatabaseConnection.UpdateElo(winner, looser);
+            if (Players[0].TcpClient != null && Players[1].TcpClient != null)
+            {
+                DatabaseConnection.UpdateElo(winner, looser);
+            }
         }
 
         public Card CheckRoundWinner(string n1, string n2)
@@ -265,8 +268,11 @@ namespace MonsterTradingCardGame
         /// <param name="message"></param>
         private void SendToBoth(string message)
         {
-            SendMessages(Players[0].TcpClient, message);
-            SendMessages(Players[1].TcpClient, message);
+            if (Players[0].TcpClient != null && Players[1].TcpClient != null)
+            {
+                SendMessages(Players[0].TcpClient, message);
+                SendMessages(Players[1].TcpClient, message);
+            }
         }
 
         /// <summary>

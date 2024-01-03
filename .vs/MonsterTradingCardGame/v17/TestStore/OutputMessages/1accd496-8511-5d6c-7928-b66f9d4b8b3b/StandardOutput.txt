@@ -1,0 +1,793 @@
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 1
+(Player1): Name(Dragon) Damage(3) TempDamage(0) fights against (Player2): Name(Dragon) Damage(3) TempDamage(0)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 1: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 2
+(Player1): Name(Dragon) Damage(3) TempDamage(0) fights against (Player2): Name(Dragon) Damage(3) TempDamage(0)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 2: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 3
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(0)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 3: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 4
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 4: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 5
+(Player1): Name(Dragon) Damage(3) TempDamage(0) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 5: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 6
+(Player1): Name(Dragon) Damage(3) TempDamage(0) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 6: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 7
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(0)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 7: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 8
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 8: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 9
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 9: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 10
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 10: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 11
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 11: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 12
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 12: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 13
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 13: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 14
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 14: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 15
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 15: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 16
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 16: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 17
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 17: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 18
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 18: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 19
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 19: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 20
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 20: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 21
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 21: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 22
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 22: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 23
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 23: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 24
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 24: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 25
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 25: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 26
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 26: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 27
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 27: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 28
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 28: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 29
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 29: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 30
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 30: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 31
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 31: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 32
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 32: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 33
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 33: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 34
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 34: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 35
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 35: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 36
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 36: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 37
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 37: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 38
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 38: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 39
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 39: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 40
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 40: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 41
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 41: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 42
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 42: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 43
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 43: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 44
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 44: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 45
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 45: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 46
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 46: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 47
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 47: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 48
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 48: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 49
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 49: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 50
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 50: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 51
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 51: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 52
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 52: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 53
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 53: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 54
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 54: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 55
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 55: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 56
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 56: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 57
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 57: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 58
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 58: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 59
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 59: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 60
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 60: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 61
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 61: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 62
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 62: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 63
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 63: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 64
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 64: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 65
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 65: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 66
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 66: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 67
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 67: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 68
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 68: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 69
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 69: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 70
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 70: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 71
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 71: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 72
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 72: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 73
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 73: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 74
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 74: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 75
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 75: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 76
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 76: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 77
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 77: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 78
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 78: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 79
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 79: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 80
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 80: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 81
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 81: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 82
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 82: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 83
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 83: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 84
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 84: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 85
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 85: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 86
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 86: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 87
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 87: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 88
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 88: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 89
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 89: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 90
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 90: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 91
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 91: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 92
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 92: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 93
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 93: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 94
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 94: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 95
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 95: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 96
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 96: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 97
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 97: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 98
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 98: none
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Round: 99
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+After Effect
+
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+Winner in Round 99: none
+Oh no, its a Draw
