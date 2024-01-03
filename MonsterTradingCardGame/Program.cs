@@ -27,6 +27,16 @@ class Program
         listener.Start(); //Start server
         Console.WriteLine($"Listening on Address http://localhost:{port}...");
 
+        while (true)
+        {
+            TcpClient client = await listener.AcceptTcpClientAsync(); // Accept Connection from Clients
+            _ = HandleClientAsync(client, listener); // Handle client asynchronously
+        }
+    }
+
+
+    static async Task HandleClientAsync(TcpClient client, TcpListener listener)
+    {
         string responseKontrukt = "HTTP/1.1 200 OK\r\nContent-Type: text/application/json\r\n\r\n"; //needed for signaling players that they are waiting in a lobby
         string responseData = String.Empty;
         byte[]? responseBytes = null;
@@ -34,10 +44,9 @@ class Program
         TcpClient? client2 = null;
         NetworkStream? networkStream2 = null;
         Request? request2 = null;
-
         while (true)
         {
-            using (var client = await listener.AcceptTcpClientAsync())//Accept Connection from Clients
+            using (client)//Accept Connection from Clients
             using (var networkStream = client.GetStream())//Create Stream to client, to send and recieve Data
             {
                 var requestBytes = new byte[1024]; //Set byte length, TCP cuts Packest at 1024 bytes
@@ -128,6 +137,10 @@ class Program
                 else if (request1.Route.StartsWith("POST /tradings"))
                 {
                     responseData = TradeDeal(request1.Token, request1.UsernameInRoute, request1.Body);
+                }
+                else if (request1.Route.StartsWith("POST /evolution"))
+                {
+                    responseData = PostEvolutionForCard(request1.Token);
                 }
 
                 else if (request1.Route == "POST /battles HTTP/1.1")
@@ -331,6 +344,16 @@ class Program
     {
         string? deserializedBody = JsonConvert.DeserializeObject<string>(body);
         return dB.TradeDeal(headertoken, traidingId, deserializedBody);
+    }
+
+    /// <summary>
+    /// forwards to Method
+    /// </summary>
+    /// <param name="headertoken"></param>
+    /// <returns>string for res</returns>
+    static string PostEvolutionForCard(string headertoken)
+    {
+        return dB.PostEvolution(headertoken);
     }
 
     /// <summary>

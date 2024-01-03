@@ -47,6 +47,7 @@ namespace MonsterTradingCardGame
                 connection.Open();//open Connection
                 var query = """
                     drop table if exists deck;
+                    drop table if exists trading;
                     drop table if exists Card;
                     drop table if exists Packs;
                     drop table if exists usersession;
@@ -126,6 +127,19 @@ namespace MonsterTradingCardGame
                     	FOREIGN KEY (CardToTrade) REFERENCES Card(CardID),
                     	FOREIGN KEY (Trader) REFERENCES Users(Username)
                     );
+
+                    Drop Table if exists Evolution;
+
+                    CREATE TABLE IF NOT EXISTS Evolution
+                    (
+                        ID serial PRIMARY KEY,
+                       	EvolutionName VARCHAR,
+                        MinNeededElo Integer,
+                        DamageIncrease Integer
+                    );
+
+                    INSERT INTO Evolution (EvolutionName, MinNeededElo, DamageIncrease) VALUES ('Plus Ultra', 103, 8);
+                    INSERT INTO Evolution (EvolutionName, MinNeededElo, DamageIncrease) VALUES ('Get Back', 95, 5);
                     """;
 
                 using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
@@ -1210,6 +1224,95 @@ namespace MonsterTradingCardGame
                 command.Parameters.AddWithValue("Username", username);
                 command.Parameters.AddWithValue("Cardid", cardid);
                 command.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
+        /// Increases (evolves) a player card damage by x
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns>res string</returns>
+        public string PostEvolution(string token)
+        {
+            string usernameInSession = GetUserDataFromSession(token);
+            Card? card = null;
+
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "select * from Deck where username = @Username ORDER BY Random() limit 1";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("Username", usernameInSession);
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows == true)
+                        {
+                            while (reader.Read())
+                            {
+                                card = GetCards(new List<string> { reader.GetString(reader.GetOrdinal("cardid")) }, token)[0];
+                            }
+                        }
+                    }
+                }
+
+                int userElo = 0;
+                query = "select * from Users where username = @Username";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("Username", usernameInSession);
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows == true)
+                        {
+                            while (reader.Read())
+                            {
+                                userElo = reader.GetInt32(reader.GetOrdinal("elo"));
+                            }
+                        }
+                    }
+                }
+
+                query = "select * from Evolution order by minneededelo asc;";
+                int damageincrease = 0;
+                string evolutionName = String.Empty;
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows == true)
+                        {
+                            while (reader.Read())
+                            {
+                                int minElo = reader.GetInt32(reader.GetOrdinal("minneededelo"));
+                                if (minElo <= userElo)
+                                {
+                                    damageincrease = reader.GetInt32(reader.GetOrdinal("damageincrease"));
+                                    evolutionName = reader.GetString(reader.GetOrdinal("evolutionname"));
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                query = "Update Card Set Damage = Damage + @Increase where cardid = @Cardid";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("Increase", damageincrease);
+                    command.Parameters.AddWithValue("Cardid", card.ID);
+                    command.ExecuteNonQuery();
+
+                    card.Damage += damageincrease;
+                }
+
+
+                return $"Success: Used Evolution {evolutionName} on Card {card.ID}:{JsonConvert.SerializeObject(card).Replace(":", ".")}";
             }
         }
     }
