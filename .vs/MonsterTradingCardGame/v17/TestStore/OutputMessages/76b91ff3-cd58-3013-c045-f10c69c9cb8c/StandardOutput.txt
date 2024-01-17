@@ -33,7 +33,7 @@ Winner in Round 4: none
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Round: 5
-(Player1): Name(Dragon) Damage(3) TempDamage(0) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(0)
 After Effect
 
 (Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
@@ -41,7 +41,7 @@ Winner in Round 5: none
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Round: 6
-(Player1): Name(Dragon) Damage(3) TempDamage(0) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
 After Effect
 
 (Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
@@ -49,7 +49,7 @@ Winner in Round 6: none
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Round: 7
-(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(0)
+(Player1): Name(Dragon) Damage(3) TempDamage(0) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
 After Effect
 
 (Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
@@ -57,7 +57,7 @@ Winner in Round 7: none
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Round: 8
-(Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
+(Player1): Name(Dragon) Damage(3) TempDamage(0) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)
 After Effect
 
 (Player1): Name(Dragon) Damage(3) TempDamage(3) fights against (Player2): Name(Dragon) Damage(3) TempDamage(3)

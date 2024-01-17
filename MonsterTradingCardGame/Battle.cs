@@ -104,7 +104,7 @@ namespace MonsterTradingCardGame
                 rounds++;
             }
 
-            if (rounds == 100)
+            if (rounds == 101)
             {
                 //no need for Elo => draw nothing happens
                 Console.WriteLine("Oh no, its a Draw");

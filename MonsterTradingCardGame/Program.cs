@@ -11,6 +11,7 @@ class Program
 
     static async Task Main()
     {
+        //set reset true or false
         bool restartAll = false;
         if (restartAll)
         {
@@ -30,7 +31,7 @@ class Program
         while (true)
         {
             TcpClient client = await listener.AcceptTcpClientAsync(); // Accept Connection from Clients
-            _ = HandleClientAsync(client, listener); // Handle client asynchronously
+            Task.Run(() => HandleClientAsync(client, listener)); // Handle client asynchronously
         }
     }
 
@@ -145,12 +146,9 @@ class Program
 
                 else if (request1.Route == "POST /battles HTTP/1.1")
                 {
-                    //Singals client that he is player 1 and waiting
-                    responseBytes = Encoding.UTF8.GetBytes(responseKontrukt + "You are Palyer 1, and currently waiting in the Lobby");
-                    networkStream.Write(responseBytes, 0, responseBytes.Length);
+                    bool foundPlayer = false;
 
-                    //Waiting fot next player to join
-                    Task secondPlayerTask = Task.Run(async () =>
+                    while (!foundPlayer)
                     {
                         client2 = await listener.AcceptTcpClientAsync();
                         Console.WriteLine("Second player connected");
@@ -160,15 +158,21 @@ class Program
                         var requestBytes2 = new byte[1024];
                         await networkStream2.ReadAsync(requestBytes, 0, requestBytes.Length);
                         request2 = new Request(requestBytes);
-                        //Verify Token and get username
+                        if (request2.Route == "POST /battles HTTP/1.1")
+                        {
+                            //Singals client that he is player 2
+                            var responseBytes2 = Encoding.UTF8.GetBytes(responseKontrukt + "You are Palyer 2");
+                            networkStream2.Write(responseBytes2, 0, responseBytes2.Length);
+                            foundPlayer = true;
+                            break;
+                        }
+                    }
 
-                        //Singals client that he is player 2
-                        var responseBytes2 = Encoding.UTF8.GetBytes(responseKontrukt + "You are Palyer 2");
-                        networkStream2.Write(responseBytes2, 0, responseBytes2.Length);
+                    Console.WriteLine("Player 1 Logged in");
+                    //Singals client that he is player 1 and waiting
+                    responseBytes = Encoding.UTF8.GetBytes(responseKontrukt + "You are Palyer 1, and currently waiting in the Lobby");
+                    networkStream.Write(responseBytes, 0, responseBytes.Length);
 
-                    });
-
-                    await secondPlayerTask;
 
                     //Loads the decks from each player
                     var p1Deck = dB.GetCards(MapDeckList(getDeck(request1.Token).Split("\n").ToList<string>()), request1.Token);
@@ -191,6 +195,7 @@ class Program
                 if (request1.Route == "POST /battles HTTP/1.1")
                 {
                     networkStream2.Write(responseBytes, 0, responseBytes.Length);
+                    networkStream2.Close();
                 }
             }
         }
