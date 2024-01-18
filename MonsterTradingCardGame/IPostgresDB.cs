@@ -296,7 +296,6 @@ namespace MonsterTradingCardGame
         }
 
 
-        //Todo Check
         /// <summary>
         /// Checking if Session Exists => maybe own method for Check
         /// </summary>
@@ -305,35 +304,45 @@ namespace MonsterTradingCardGame
         /// <returns> A string message </returns>
         public string CreatePackandCards(List<Card> cards, string token)
         {
-            string packUUID = String.Empty;
-            using (var connection = new NpgsqlConnection(connectionString))
+            try
             {
-                connection.Open();
-
-                string query = "select * from Usersession where SessionToken = @Token";
-
-                using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
+                string packUUID = String.Empty;
+                using (var connection = new NpgsqlConnection(connectionString))
                 {
-                    command.Parameters.AddWithValue("Token", token.Replace("Bearer ", ""));
+                    connection.Open();
 
-                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    string query = "select * from Usersession where SessionToken = @Token";
+
+                    using (NpgsqlCommand command = new NpgsqlCommand(query, connection))
                     {
-                        //Check if i get Rows back => means that there is an active Session
-                        if (reader.HasRows == true)
+                        command.Parameters.AddWithValue("Token", token.Replace("Bearer ", ""));
+
+                        using (NpgsqlDataReader reader = command.ExecuteReader())
                         {
-                            //SavePack
-                            packUUID = CreatePack();
-                            //SaveCards
-                            CreateCards(cards, packUUID);
+                            string username = reader.GetString(reader.GetOrdinal("username"));
+
+                            //Check if i get Rows back => means that there is an active Session
+                            if (reader.HasRows == true && username == "admin")
+                            {
+                                //SavePack
+                                packUUID = CreatePack();
+                                //SaveCards
+                                CreateCards(cards, packUUID);
+                            }
                         }
                     }
-                }
 
-                connection.Close();
+                    connection.Close();
+                }
+                Console.WriteLine($"Created Pack: {packUUID}");
+                string packidInDb = "{\"PackId\".\"" + packUUID + "\"}";
+                return $"Success: Pack created:{packidInDb}";
             }
-            Console.WriteLine($"Created Pack: {packUUID}");
-            string packidInDb = "{\"PackId\".\"" + packUUID + "\"}";
-            return $"Success: Pack created:{packidInDb}";
+            catch (Exception)
+            {
+                Console.WriteLine("Failed: Pack not created");
+                return $"Failed: Pack not created";
+            }
         }
 
         /// <summary>
@@ -1042,7 +1051,6 @@ namespace MonsterTradingCardGame
                         {
                             while (reader.Read())
                             {
-                                //Todo, => darf man seine eigenen Trading deals sehen? => eig schon, weil im Curl file gibt es einen versuch auf sich selbst zu traden geht ja nur wenn man den deal sieht
                                 Trading trading = new Trading(reader.GetString(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("cardtotrade")), reader.GetString(reader.GetOrdinal("type")), reader.GetDouble(reader.GetOrdinal("minimumdamage")), reader.GetString(reader.GetOrdinal("trader")));
                                 currentTraiding.Add(trading);
                             }
@@ -1052,7 +1060,7 @@ namespace MonsterTradingCardGame
 
                 connection.Close();
             }
-
+            Console.WriteLine($"Success:All trading deals:{JsonConvert.SerializeObject(currentTraiding).Replace(":", ".")}");
             return $"Success:All trading deals:{JsonConvert.SerializeObject(currentTraiding).Replace(":", ".")}";
         }
 
@@ -1085,6 +1093,7 @@ namespace MonsterTradingCardGame
                 connection.Close();
             }
 
+            Console.WriteLine($"Success:Posted trading deal");
             return $"Success:Posted trading deal";
         }
 
@@ -1138,6 +1147,7 @@ namespace MonsterTradingCardGame
                 connection.Close();
             }
             string idString = "{\"ID\".\"" + tradingId + "\"}";
+            Console.WriteLine($"Success:Deleted Trading deal:{idString}");
             return $"Success:Deleted Trading deal:{idString}";
         }
 
@@ -1195,17 +1205,20 @@ namespace MonsterTradingCardGame
                     }
                     else
                     {
+                        Console.WriteLine($"Error:Damage to low");
                         return $"Error:Damage to low";
                     }
                 }
                 else
                 {
+                    Console.WriteLine($"Error:Cant Trade with yourself");
                     return $"Error:Cant Trade with yourself";
                 }
 
                 connection.Close();
             }
 
+            Console.WriteLine($"Success:Deal went successfuly");
             return $"Success:Deal went successfuly";
         }
 
@@ -1311,7 +1324,7 @@ namespace MonsterTradingCardGame
                     card.Damage += damageincrease;
                 }
 
-
+                Console.WriteLine($"Success: Used Evolution {evolutionName} on Card {card.ID}:{JsonConvert.SerializeObject(card)}");
                 return $"Success: Used Evolution {evolutionName} on Card {card.ID}:{JsonConvert.SerializeObject(card).Replace(":", ".")}";
             }
         }

@@ -34,7 +34,7 @@ namespace MonsterTradingCardGame
             SendToBoth("Let the battle beginn");
 
             int rounds = 1;
-            while (rounds < 100) //max 100 rounds otherwise draw
+            while (rounds <= 100) //max 100 rounds otherwise draw
             {
                 //get a random Card from Deck
                 c1 = p1.Deck[rnd.Next(p1.Deck.Count)];
