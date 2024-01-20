@@ -52,9 +52,9 @@
             player1.Deck.AddRange(new[]
             {
                 new Card("ID1", "Knight", 1),
-                new Card("ID2", "RegularSpell", 2),
+                new Card("ID2", "RegularSpell", 1),
                 new Card("ID3", "FireSpell", 1),
-                new Card("ID4", "WaterGoblin", 2),
+                new Card("ID4", "Goblin", 1),
             });
 
             player2.Deck.AddRange(new[]
