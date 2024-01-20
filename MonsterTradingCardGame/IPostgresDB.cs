@@ -274,7 +274,7 @@ namespace MonsterTradingCardGame
                         {
                             command.ExecuteNonQuery();
                             Console.WriteLine($"Created Session for User: {user.Username}");
-                            string tokenString = "{\"AccessToken\".\"" + user.Username + "-mtcgToken\"}";
+                            string tokenString = "{\"AccessToken\".\"" + user.Username + "-mtcgToken\"}"; //in a real environment, there would be the creation of a real token!
                             return $"Success:{user.Username} logged in:{tokenString}";
                         }
                         catch (Exception ex)
@@ -319,6 +319,7 @@ namespace MonsterTradingCardGame
 
                         using (NpgsqlDataReader reader = command.ExecuteReader())
                         {
+                            reader.Read();
                             string username = reader.GetString(reader.GetOrdinal("username"));
 
                             //Check if i get Rows back => means that there is an active Session
